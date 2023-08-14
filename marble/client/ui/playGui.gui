@@ -421,6 +421,143 @@ new GameTSCtrl(PlayGUI) {
          wrap = "0";
       };
    };
+   new GuiControl(PGCountdownTT) {
+      profile = "GuiDefaultProfile";
+      horizSizing = "center";
+      vertSizing = "bottom";
+      position = "316 10";
+      extent = "500 41";
+      minExtent = "8 8";
+      visible = "0";
+      helpTag = "0";
+
+      new GuiObjectView(PGCountdownTTImage) {
+         profile = "GuiButtonProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "348 3";
+         extent = "36 36";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         model = "~/data/shapes/items/timetravel.dts";
+         cameraZRot = "0";
+         forceFOV = "0";
+         skin = "base";
+         cameraRotX = "0";
+         CameraZRotSpeed = "0.001";
+         orbitDistance = "1.39886";
+         autoSize = "1";
+      };
+      new GuiBitmapCtrl(PGCountdownTTFirstDigit) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "375 0";
+         extent = "28 37";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/0.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(PGCountdownTTPoint1) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "388 0";
+         extent = "28 37";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/point.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(PGCountdownTTSecondDigit) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "391 0";
+         extent = "28 37";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/0.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(PGCountdownTTPoint2) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "404 0";
+         extent = "28 37";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/point.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(PGCountdownTTThirdDigit) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "407 0";
+         extent = "28 37";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/0.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(PGCountdownTTPoint3) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "420 0";
+         extent = "28 37";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/point.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(PGCountdownTTFourthDigit) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "429 0";
+         extent = "28 37";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/0.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(PGCountdownTTFifthDigit) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "445 0";
+         extent = "28 37";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/0.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(PGCountdownTTSixthDigit) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "461 0";
+         extent = "28 37";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/0.png";
+         wrap = "0";
+      };
+   };
    new GuiControl() {
       profile = "GuiDefaultProfile";
       horizSizing = "width";

@@ -208,7 +208,6 @@ function pauseGame()
 {
    if ($Server::ServerType $= "SinglePlayer")
       $gamePaused = true;
-      $wasPaused = 1;
 }
 
 function resumeGame()

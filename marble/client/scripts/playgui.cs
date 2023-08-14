@@ -12,6 +12,14 @@
 
 function PlayGui::onWake(%this)
 {
+   // Actually set FOV...
+   setFov($pref::Player::defaultFov);
+
+   // Timer visibilities
+   TimerHundredths.setVisible(!$pref::extendedTimer);
+   TimerThousandths.setVisible($pref::extendedTimer);
+   %this.updateTimeTravelCountdown();
+
    // Turn off any shell sounds...
    // alxStop( ... );
 
@@ -168,11 +176,8 @@ function onFrameAdvance(%timeDelta)
    
    %marbleExists = isObject(ServerConnection) && isObject(ServerConnection.getControlObject()) && ServerConnection.getControlObject();
    if (%marbleExists && $Game::State !$= "End" && !$playingDemo) {
-      enforceTimeScale();
+      setTimeScale(1);
    }
-
-   TimerHundredths.setVisible(!$pref::extendedTimer);
-   TimerThousandths.setVisible($pref::extendedTimer);
 }
 
 function PlayGui::stopTimer(%this)
@@ -210,7 +215,11 @@ function PlayGui::updateTimer(%this, %timeInc)
    if (%this.elapsedTime > 3600000)
       %this.elapsedTime = 3599999;
 
+   TimerHundredths.setVisible(!$pref::extendedTimer);
+   TimerThousandths.setVisible($pref::extendedTimer);
+
    %this.updateControls();
+   %this.updateTimeTravelCountdown();
 }   
 
 function PlayGui::updateControls(%this)
@@ -255,12 +264,116 @@ function PlayGui::updateControls(%this)
    PG_NegSign2.setVisible(%drawNeg);
 }
 
+// From PlatinumQuest, written by main_gi. Tweaked for MBG, and to optionally show thousandths
+function PlayGui::updateTimeTravelCountdown(%this)
+{
+   if (!$pref::timeTravelDisplay) {
+      PGCountdownTT.setVisible(false);
+      return;
+   }
+
+   %timeUsed = %this.bonusTime;
+   if ($pref::timeTravelDisplay == 2) {
+      %timeUsed += 99; // When you pick up a 5s timer, it should start by displaying 5.0, instead of 4.9. This also prevents the TT timer from showing 0.0. But if you add 100, picking up a 5s timer can show "5.1". Turns out adding 99 actually works perfectly here.
+   } else if (!$pref::extendedTimer) {
+      %timeUsed += 9;
+   }
+
+   if (%timeUsed > 999999)
+      %timeUsed = 999999; // Seems time bonuses in vanilla MBG glitch out this high anyway lol
+
+   %secondsLeft = mFloor(%timeUsed/1000);
+   %tenths = mFloor(%timeUsed/100) % 10;
+   %hundredths = mFloor(%timeUsed/10) % 10;
+   %thousandths = %timeUsed % 10;
+
+   %one = mFloor(%secondsLeft) % 10;
+   %ten = mFloor(%secondsLeft / 10) % 10;
+   %hun = mFloor(%secondsLeft / 100);
+
+   %offsetIfThousandths = $pref::extendedTimer ? 12 : 0;
+
+   if (%secondsLeft < 10) {
+      PGCountdownTTFirstDigit.setNumber(%one);
+      PGCountdownTTSecondDigit.setNumber(%tenths);
+      PGCountdownTTSecondDigit.setPosition("397" + %offsetIfThousandths SPC "0");
+      PGCountdownTTThirdDigit.setNumber(%hundredths);
+      PGCountdownTTThirdDigit.setPosition("413" + %offsetIfThousandths SPC "0");
+      PGCountdownTTFourthDigit.setNumber(%thousandths);
+      PGCountdownTTPoint1.setVisible(true);
+      PGCountdownTTPoint1.setPosition("388" + %offsetIfThousandths SPC "0");
+      PGCountdownTTPoint2.setVisible(false);
+      PGCountdownTTPoint3.setVisible(false);
+      %digits = 4;
+   } else if (%secondsLeft < 100) {
+      PGCountdownTTFirstDigit.setNumber(%ten);
+      PGCountdownTTSecondDigit.setNumber(%one);
+      PGCountdownTTSecondDigit.setPosition("391" + %offsetIfThousandths SPC "0");
+      PGCountdownTTThirdDigit.setNumber(%tenths);
+      PGCountdownTTThirdDigit.setPosition("413" + %offsetIfThousandths SPC "0");
+      PGCountdownTTFourthDigit.setNumber(%hundredths);
+      PGCountdownTTFifthDigit.setNumber(%thousandths);
+      PGCountdownTTPoint1.setVisible(false);
+      PGCountdownTTPoint2.setVisible(true);
+      PGCountdownTTPoint2.setPosition("404" + %offsetIfThousandths SPC "0");
+      PGCountdownTTPoint3.setVisible(false);
+      %digits = 5;
+   } else {
+      PGCountdownTTFirstDigit.setNumber(%hun);
+      PGCountdownTTSecondDigit.setNumber(%ten);
+      PGCountdownTTSecondDigit.setPosition("391" + %offsetIfThousandths SPC "0");
+      PGCountdownTTThirdDigit.setNumber(%one);
+      PGCountdownTTThirdDigit.setPosition("407" + %offsetIfThousandths SPC "0");
+      PGCountdownTTFourthDigit.setNumber(%tenths);
+      PGCountdownTTFifthDigit.setNumber(%hundredths);
+      PGCountdownTTSixthDigit.setNumber(%thousandths);
+      PGCountdownTTPoint1.setVisible(false);
+      PGCountdownTTPoint2.setVisible(false);
+      PGCountdownTTPoint3.setVisible(true);
+      PGCountdownTTPoint3.setPosition("420" + %offsetIfThousandths SPC "0");
+      %digits = 6;
+   }
+
+   PGCountdownTTImage.setPosition("348" + %offsetIfThousandths SPC "3");
+   PGCountdownTTFirstDigit.setPosition("375" + %offsetIfThousandths SPC "0");
+   PGCountdownTTFourthDigit.setPosition("429" + %offsetIfThousandths SPC "0");
+   PGCountdownTTFifthDigit.setPosition("445" + %offsetIfThousandths SPC "0");
+   PGCountdownTTSixthDigit.setPosition("461" + %offsetIfThousandths SPC "0");
+
+   if ($pref::timeTravelDisplay == 2) {
+      %digits -= 2;
+   } else if (!$pref::extendedTimer) {
+      %digits -= 1;
+   }
+
+   //PGCountdownTTFirstDigit.setVisible(%digits >= 1); // Always true
+   //PGCountdownTTSecondDigit.setVisible(%digits >= 2); // Always true
+   PGCountdownTTThirdDigit.setVisible(%digits >= 3);
+   PGCountdownTTFourthDigit.setVisible(%digits >= 4);
+   PGCountdownTTFifthDigit.setVisible(%digits >= 5);
+   PGCountdownTTSixthDigit.setVisible(%digits >= 6);
+
+   PGCountdownTT.setVisible(%this.bonusTime);
+}
+
 
 //-----------------------------------------------------------------------------
 
 function GuiBitmapCtrl::setNumber(%this,%number)
 {
    %this.setBitmap($Con::Root @ "/client/ui/game/numbers/" @ %number @ ".png");
+}
+
+function GuiControl::setPosition(%gui, %position) {
+   if (%gui.position $= %position)
+      return;
+
+   %p1 = getWord(%position, 0);
+   %p2 = getWord(%position, 1);
+   %e1 = getWord(%gui.extent, 0);
+   %e2 = getWord(%gui.extent, 1);
+
+   %gui.resize(%p1, %p2, %e1, %e2);
 }
 
 
@@ -274,21 +387,4 @@ function refreshBottomTextCtrl()
 function refreshCenterTextCtrl()
 {
    CenterPrintText.position = "0 0";
-}
-
-function enforceTimeScale() {
-   %et = playGui.elapsedTime + playGui.totalBonus;
-   %rt = getRealTime(); 
-
-   if (%et < 100 || $wasPaused) {
-      $recTimeOffset = %rt - %et;
-      $wasPaused = 0;
-   } else if (%et > 100) {
-      %timeCompare = %rt - %et;
-      %diff = mFloor(%timeCompare - $recTimeOffset);
-
-      if (mAbs(%diff) > 1000) {
-         disconnect();
-      }
-   }
 }

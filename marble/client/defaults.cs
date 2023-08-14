@@ -81,3 +81,5 @@ $Pref::Unix::OpenALFrequency = 44100;
 
 $pref::extendedTimer = 1;
 $pref::showThousandths = 1;
+$pref::showParticles = 0;
+$pref::timeTravelDisplay = 1;

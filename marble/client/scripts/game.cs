@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 // Torque Game Engine
-// 
+//
 // Copyright (c) 2001 GarageGames.Com
 //-----------------------------------------------------------------------------
 
@@ -79,7 +79,7 @@ function highScoreNameChanged()
 function reformatGameEndText()
 {
    // Final Score
-   %text = 
+   %text =
       "<shadow:1:1><tab:240,250>" @
       "<font:Expo:50><color:ffff00>Final Time:\t<color:fff090>" @
       formatTime($Game::ScoreTime) @ "<color:000000><font:Expo:32>\n<just:center>";
@@ -103,7 +103,7 @@ function reformatGameEndText()
          ($Game::Qualified? "<shadowcolor:ffffff7f><color:000000>": "<shadowcolor:0000007f><color:ff0000>") @
          formatTime(MissionInfo.time) @ "\n";
    else
-      %text = %text @ "<color:000000><font:DomCasualD:32>Qualify Time:\t\t99:59.99\n";
+      %text = %text @ "<color:000000><font:DomCasualD:32>Qualify Time:\t" @ formatTime(5998999) @ "\n";
 
    if(MissionInfo.goldTime)
    {
@@ -120,8 +120,8 @@ function reformatGameEndText()
    {
       %time = getField($hs[%i], 0);
       %name = getField($hs[%i], 1);
-      %text = %text 
-         @ "<shadowcolor:ffffff7f><color:000000><font:DomCasualD:32>" @ %i+1 @ ". " @ %name @ "\t" 
+      %text = %text
+         @ "<shadowcolor:ffffff7f><color:000000><font:DomCasualD:32>" @ %i+1 @ ". " @ %name @ "\t"
          @ (%time < MissionInfo.goldTime ? "<shadowcolor:0000007f><color:ffff00>" : "") @ formatTime(%time) @ "\n";
    }
    // Display the end-game screen
@@ -149,7 +149,7 @@ function formatTime(%time)
    %secondsTen   = (%seconds - %secondsOne) / 10;
    %minutesOne   = %minutes % 10;
    %minutesTen   = (%minutes - %minutesOne) / 10;
-   %hundredthOne = %hundredth % 10; 
+   %hundredthOne = %hundredth % 10;
    %hundredthTen = (%hundredth - %hundredthOne) / 10;
 
    if ($pref::showThousandths == 1) {
