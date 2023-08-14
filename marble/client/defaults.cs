@@ -87,3 +87,5 @@ $pref::inputDisplay = 1;
 $pref::timeskip = 5000;
 $pref::enableFrameRateUnlock = 1;
 $pref::setVerticalSync = 0;
+$pref::restartKeybind = r;
+$pref::respawnKeybind = shift r;

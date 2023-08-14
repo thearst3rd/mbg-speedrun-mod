@@ -334,6 +334,102 @@ function togglePrintInfo() {
    return $printInfo;
 }
 
+function help()
+{
+   echo("\nCall one of the functions below for more information:");
+   echo("" SPC "hotKeys();"); 
+   echo("" SPC "newPreferences();");
+   echo("" SPC "newCommands();"); 
+   echo("" SPC "helpfulCommands();");
+   echo("" SPC "demoRecording();\n"); 
+}
+
+function hotKeys()
+{
+   echo("\nHotkeys:");
+   echo("" SPC "Control + 1 = Toggles FPS");
+   echo("" SPC "Control + 2 = Toggles extended timer");
+   echo("" SPC "Control + 3 = Round robin time travel display options");
+   echo("" SPC "Control + 4 = Round robin intput display options");
+   echo("" SPC "Control + 5 = Toggles third decimal for high scores");
+   echo("" SPC "Control + 6 = Toggles particles");
+   echo("" SPC "Control + 7 = Toggles Frame Rate Unlocker");
+   echo("" SPC "Control + 8 = Toggles vertical sync");
+   echo("" SPC "NumPad0 = Time skip, can be set with $pref::timeskip");
+   echo("" SPC "NumPad1 = 5% speed");
+   echo("" SPC "NumPad2 = 25% speed");
+   echo("" SPC "NumPad3 = 100% speed");
+   echo("" SPC "NumPad5 = 400% speed");
+   echo("" SPC "NumPad6 = Toggles $testcheats");
+   echo("" SPC "NumPad7 = Sets resolution to 1920x1080");
+   echo("" SPC "NumPad8 = Sets resolution to 1280x720");
+   echo("" SPC "NumPad9 = Toggles marble statistics in console");
+   echo("" SPC "R = Restart by fully reloading the mission*");
+   echo("" SPC "Shift + R = Resets the mission at the start (desyncs)**\n");
+   echo("" SPC "*Can be changed with setRestartKeybind(VALUE);");
+   echo("" SPC "**Can be changed with setRespawnKeybind(VALUE);\n");
+}
+
+function newPreferences()
+{
+   echo("\nNewly introduced preferences, defaults and options:");
+   echo("" SPC "$pref::extendedTimer = 1;           0 or 1");
+   echo("" SPC "$pref::showThousandths = 1;         0 or 1");
+   echo("" SPC "$pref::showParticles = 0;           0 or 1*");
+   echo("" SPC "$pref::timeTravelDisplay = 1;       0, 1 or 2");
+   echo("" SPC "$pref::inputDisplay = 1;            0, 1 or 2");
+   echo("" SPC "$pref::timeskip = 5000;             Value in ms");
+   echo("" SPC "$pref::enableFrameRateUnlock = 1;   0 or 1");
+   echo("" SPC "$pref::setVerticalSync = 0;         0 or 1");
+   echo("" SPC "$pref::Player::defaultFov = 90;     Value in degrees");
+   echo("" SPC "$pref::restartKeybind = R;          setRestartKeybind();");
+   echo("" SPC "$pref::respawnKeybind = Shift + R;  setRespawnKeybind();\n");
+   echo("" SPC "*Default recommended as particles crash replay button\n");
+}
+
+function newCommands()
+{
+   echo("\nNewly introduced commands and descriptions:");
+   echo("" SPC "setTimeScale();        Changes the speed during demos");
+   echo("" SPC "timeskip();            Skips ahead the value in ms");
+   echo("" SPC "setTickInterval();     Sets max FPS to 1000 / value"); 
+   echo("" SPC "setRestartKeybind();   Changes restart keybind to value");
+   echo("" SPC "setRespawnKeybind();   Changes respawn keybind to value\n");
+}
+
+function helpfulCommands() 
+{
+   echo("\nHelpful commands in vanilla Marble Blast Gold:");
+   echo("" SPC "playDemo(\"marble/client/demos/demo.rec\");");
+   echo("" SPC "playnextdemo();");
+   echo("" SPC "echo(PlayGui.bonusTime);");
+   echo("" SPC "echo(PlayGui.totalBonus);");
+   echo("" SPC "$pref::Environmentmaps = 1; (Reflections)\n");
+}
+
+function demoRecording()
+{
+   echo("\nDemo recording has been completely remodeled to better");
+   echo("fit the needs of speedrunners via fixing the user");
+   echo("interface, creating a non-destructive file management");
+   echo("alternative, resolving desyncs and eliminating the");
+   echo("need for $doRecordDemo. The end result is faster-paced");
+   echo("gameplay and more confidence in the integrity of recs.");
+   echo("\nDemo files will be recording in the background");
+   echo("continuously without the need for a command. Each");
+   echo("attempt will create a new file to avoid the possiblity");
+   echo("of personal bests being overwritten.");
+   echo("" SPC "- Restarts or canceling a load will delete the current");
+   echo("  " SPC "unfinished recording.");
+   echo("" SPC "- Replay will delete a completed run and return the");
+   echo("  " SPC "player to the start to continue attempts.");
+   echo("" SPC "- Continue will save the recording with the level");
+   echo("  " SPC "name and elapsed time, and exit to level select.");
+   echo("" SPC "- If the player exits a level, the player will");
+   echo("  " SPC "be prompted if they would like to keep the attempt");
+   echo("  " SPC "as a blooper or to delete the recording.\n");
+}
+
 function toggleFPS() {
    if($fpsEnabled) {
       $fpsEnabled = false;
@@ -386,7 +482,7 @@ function toggleCheats() {
    return $testcheats;
 }
 
-function restartHotKey() {
+function restartKeybind() {
    %marbleExists = isObject(ServerConnection) && isObject(ServerConnection.getControlObject()) && ServerConnection.getControlObject();
    if (%marbleExists && $Game::State !$= "End") {
       resumeGame();
@@ -394,24 +490,51 @@ function restartHotKey() {
    }
 }
 
+function setRestartKeybind(%this)
+{
+   moveMap.bind(keyboard, $pref::restartKeybind, "");
+   $pref::restartKeybind = %this;
+   moveMap.bind(keyboard, $pref::restartKeybind, restartKeybind);
+}
+
+function respawnKeybind() {
+   %marbleExists = isObject(ServerConnection) && isObject(ServerConnection.getControlObject()) && ServerConnection.getControlObject();
+   if (%marbleExists && $Game::State !$= "End") {
+      LocalClientConnection.respawnPlayer();
+   }
+}
+
+function setRespawnKeybind(%this)
+{
+   moveMap.bind(keyboard, $pref::respawnKeybind, "");
+   $pref::respawnKeybind = %this;
+   moveMap.bind(keyboard, $pref::respawnKeybind, respawnKeybind);
+}
+
 function toggleFrameRateLocker() {
    $pref::enableFrameRateUnlock = !$pref::enableFrameRateUnlock;
+   $pref::setVerticalSync = 0;
+   setTickInterval(1);
+   setVerticalSync($pref::setVerticalSync);
    enableFrameRateUnlock($pref::enableFrameRateUnlock);
 }
 
 function toggleVerticalSync() {
    $pref::setVerticalSync = !$pref::setVerticalSync;
+   $pref::enableFrameRateUnlock = 1;
+   setTickInterval(1);
+   enableFrameRateUnlock($pref::enableFrameRateUnlock);
    setVerticalSync($pref::setVerticalSync);
 }
 
-GlobalActionMap.bindCmd(keyboard, "alt 1", "toggleFPS();", "");
-GlobalActionMap.bindCmd(keyboard, "alt 2", "toggleExtendedTimer();", "");
-GlobalActionMap.bindCmd(keyboard, "alt 3", "toggletimeTravelDisplay();", "");
-GlobalActionMap.bindCmd(keyboard, "alt 4", "toggleInputDisplay();", "");
-GlobalActionMap.bindCmd(keyboard, "alt 5", "toggleShowThousandths(); refreshThousandths();", "");
-GlobalActionMap.bindCmd(keyboard, "alt 6", "toggleShowParticles(); schedule(10,0,restartHotKey);", "");
-GlobalActionMap.bindCmd(keyboard, "alt 7", "toggleFrameRateLocker();", "");
-GlobalActionMap.bindCmd(keyboard, "alt 8", "toggleVerticalSync();", "");
+GlobalActionMap.bindCmd(keyboard, "ctrl 1", "toggleFPS();", "");
+GlobalActionMap.bindCmd(keyboard, "ctrl 2", "toggleExtendedTimer();", "");
+GlobalActionMap.bindCmd(keyboard, "ctrl 3", "toggletimeTravelDisplay();", "");
+GlobalActionMap.bindCmd(keyboard, "ctrl 4", "toggleInputDisplay();", "");
+GlobalActionMap.bindCmd(keyboard, "ctrl 5", "toggleShowThousandths(); refreshThousandths();", "");
+GlobalActionMap.bindCmd(keyboard, "ctrl 6", "toggleShowParticles(); schedule(10,0,restartKeybind);", "");
+GlobalActionMap.bindCmd(keyboard, "ctrl 7", "toggleFrameRateLocker();", "");
+GlobalActionMap.bindCmd(keyboard, "ctrl 8", "toggleVerticalSync();", "");
 
 GlobalActionMap.bindCmd(keyboard, NumPad0, "timeskip($pref::timeskip);", "");
 GlobalActionMap.bindCmd(keyboard, NumPad1, "setTimeScale(0.05);", "");
@@ -423,4 +546,5 @@ GlobalActionMap.bindCmd(keyboard, NumPad6, "toggleCheats();", "");
 GlobalActionMap.bindCmd(keyboard, NumPad7, "setResolution(1920,1080);", "");
 GlobalActionMap.bindCmd(keyboard, NumPad8, "setResolution(1280,720);", "");
 GlobalActionMap.bindCmd(keyboard, NumPad9, "togglePrintInfo();", "");
-moveMap.bindCmd(keyboard, "R", "restartHotKey();", "");
+moveMap.bind(keyboard, $pref::restartKeybind, restartKeybind);
+moveMap.bind(keyboard, $pref::respawnKeybind, respawnKeybind);
