@@ -661,5 +661,166 @@ new GameTSCtrl(PlayGUI) {
       bitmap = "./game/powerup.png";
       wrap = "0";
    };
+
+
+   // --- INPUT DISPLAY ---
+
+
+   new GuiControl(InputDisplay) {
+      profile = "GuiDefaultProfile";
+      horizSizing = "right";
+      vertSizing = "top";
+      position = "10 365";
+      extent = "164 107";
+      minExtent = "8 8";
+      visible = "1";
+      helpTag = "0";
+
+      new GuiBitmapCtrl(w_unpressed) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "top";
+         position = "0 0";
+         extent = "164 107";
+         minExtent = "8 8";
+         visible = "0";
+         helpTag = "0";
+         bitmap = "./game/inputdisplay/w_unpressed.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(a_unpressed) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "top";
+         position = "0 0";
+         extent = "164 107";
+         minExtent = "8 8";
+         visible = "0";
+         helpTag = "0";
+         bitmap = "./game/inputdisplay/a_unpressed.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(s_unpressed) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "top";
+         position = "0 0";
+         extent = "164 107";
+         minExtent = "8 8";
+         visible = "0";
+         helpTag = "0";
+         bitmap = "./game/inputdisplay/s_unpressed.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(d_unpressed) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "top";
+         position = "0 0";
+         extent = "164 107";
+         minExtent = "8 8";
+         visible = "0";
+         helpTag = "0";
+         bitmap = "./game/inputdisplay/d_unpressed.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(jump_unpressed) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "top";
+         position = "0 0";
+         extent = "164 107";
+         minExtent = "8 8";
+         visible = "0";
+         helpTag = "0";
+         bitmap = "./game/inputdisplay/jump_unpressed.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(item_unpressed) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "top";
+         position = "0 0";
+         extent = "164 107";
+         minExtent = "8 8";
+         visible = "0";
+         helpTag = "0";
+         bitmap = "./game/inputdisplay/item_unpressed.png";
+         wrap = "0";
+      };
+
+      new GuiBitmapCtrl(w_pressed) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "top";
+         position = "0 0";
+         extent = "164 107";
+         minExtent = "8 8";
+         visible = "0";
+         helpTag = "0";
+         bitmap = "./game/inputdisplay/w_pressed.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(a_pressed) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "top";
+         position = "0 0";
+         extent = "164 107";
+         minExtent = "8 8";
+         visible = "0";
+         helpTag = "0";
+         bitmap = "./game/inputdisplay/a_pressed.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(s_pressed) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "top";
+         position = "0 0";
+         extent = "164 107";
+         minExtent = "8 8";
+         visible = "0";
+         helpTag = "0";
+         bitmap = "./game/inputdisplay/s_pressed.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(d_pressed) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "top";
+         position = "0 0";
+         extent = "164 107";
+         minExtent = "8 8";
+         visible = "0";
+         helpTag = "0";
+         bitmap = "./game/inputdisplay/d_pressed.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(jump_pressed) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "top";
+         position = "0 0";
+         extent = "164 107";
+         minExtent = "8 8";
+         visible = "0";
+         helpTag = "0";
+         bitmap = "./game/inputdisplay/jump_pressed.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(item_pressed) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "top";
+         position = "0 0";
+         extent = "164 107";
+         minExtent = "8 8";
+         visible = "0";
+         helpTag = "0";
+         bitmap = "./game/inputdisplay/item_pressed.png";
+         wrap = "0";
+      };
+   };
 };
 //--- OBJECT WRITE END ---

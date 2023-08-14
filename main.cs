@@ -306,7 +306,7 @@ package TASInfo {
             %time = PlayGui.elapsedTime + PlayGui.bonusTime;
             // Log to console
             echo("V:" SPC %velocity SPC "P:" SPC %position SPC "A:" SPC %angularVelocity SPC "Frame:" SPC $currentFrame SPC "Time:" SPC %time);
-        }
+        } else {}
 
         // Frame counter
         %gameRunning = isObject(ServerConnection);
@@ -318,22 +318,89 @@ package TASInfo {
     }
 };
 activatePackage(TASInfo);
- 
 
-GlobalActionMap.bindCmd(keyboard, F1, "$dorecorddemo=1;", "");
-GlobalActionMap.bindCmd(keyboard, F2, "echo(PlayGui.elapsedTime);", "");
-GlobalActionMap.bindCmd(keyboard, F3, "echo(PlayGui.totalBonus);", "");
-GlobalActionMap.bindCmd(keyboard, F4, "metrics(fps);", "");
-GlobalActionMap.bindCmd(keyboard, F5, "$printInfo = true;", "");
-GlobalActionMap.bindCmd(keyboard, F6, "$printInfo = false;", "");
-GlobalActionMap.bindCmd(keyboard, F7, "$testcheats=1;", "");
+function togglePrintInfo() {
+   %marbleExists = isObject(ServerConnection) && isObject(ServerConnection.getControlObject()) && ServerConnection.getControlObject();
+   if (%marbleExists && $ConsoleActive) {
+      if ($printInfo == true) {
+         $printInfo = false;
+         consoleWindowDefault();
+         echo("");
+      } else {
+         $printInfo = true;
+         consoleWindowPrintInfo();
+      }
+   }
+   return $printInfo;
+}
 
-GlobalActionMap.bindCmd(keyboard, NumPad0, "timeskip(5000);", "");
+function toggleFPS() {
+   if($fpsEnabled) {
+      $fpsEnabled = false;
+      return metrics();
+   } else {
+      $fpsEnabled = true;
+      return metrics(fps);
+   }
+}
+
+function toggleExtendedTimer() {
+   $pref::extendedTimer = !$pref::extendedTimer;
+   return $pref::extendedTimer;
+}
+
+function toggletimeTravelDisplay() {
+   $pref::timeTravelDisplay++;
+   if ($pref::timeTravelDisplay > 2) {
+      $pref::timeTravelDisplay = 0;
+   }
+   return $pref::timeTravelDisplay;
+}
+
+function toggleInputDisplay() {
+   $pref::inputDisplay++;
+   if ($pref::inputDisplay > 2) {
+      $pref::inputDisplay = 0;
+   }
+   return $pref::inputDisplay;
+}
+
+function toggleShowThousandths() {
+   $pref::showThousandths = !$pref::showThousandths;
+   return $pref::showThousandths;
+}
+
+function refreshThousandths() {
+   %row = PM_MissionList.getRowNumById(PM_MissionList.getSelectedId());
+   PM_setSelected(%row);
+   reformatGameEndText();
+}
+
+function toggleShowParticles() {
+   $pref::showParticles = !$pref::showParticles;
+   return $pref::showParticles;
+}
+
+function toggleCheats() {
+   $testcheats = !$testcheats;
+   return $testcheats;
+}
+
+GlobalActionMap.bindCmd(keyboard, "alt 1", "toggleFPS();", "");
+GlobalActionMap.bindCmd(keyboard, "alt 2", "toggleExtendedTimer();", "");
+GlobalActionMap.bindCmd(keyboard, "alt 3", "toggletimeTravelDisplay();", "");
+GlobalActionMap.bindCmd(keyboard, "alt 4", "toggleInputDisplay();", "");
+GlobalActionMap.bindCmd(keyboard, "alt 5", "toggleShowThousandths(); refreshThousandths();", "");
+GlobalActionMap.bindCmd(keyboard, "alt 6", "toggleShowParticles();", "");
+
+GlobalActionMap.bindCmd(keyboard, NumPad0, "timeskip($pref::timeskip);", "");
 GlobalActionMap.bindCmd(keyboard, NumPad1, "setTimeScale(0.05);", "");
 GlobalActionMap.bindCmd(keyboard, NumPad2, "setTimeScale(0.25);", "");
 GlobalActionMap.bindCmd(keyboard, NumPad3, "setTimeScale(1);", "");
 GlobalActionMap.bindCmd(keyboard, NumPad4, "timeskip(1000);", "");
 GlobalActionMap.bindCmd(keyboard, NumPad5, "setTimeScale(4);", "");
+GlobalActionMap.bindCmd(keyboard, NumPad6, "toggleCheats();", "");
 GlobalActionMap.bindCmd(keyboard, NumPad7, "setResolution(1920,1080);", "");
 GlobalActionMap.bindCmd(keyboard, NumPad8, "setResolution(1280,720);", "");
-moveMap.bindCmd(keyboard, "R", "", "resumeGame();disconnect();PM_StartMission();");
+GlobalActionMap.bindCmd(keyboard, NumPad9, "togglePrintInfo();", "");
+moveMap.bindCmd(keyboard, "R", "", "resumeGame();restartLevel();");

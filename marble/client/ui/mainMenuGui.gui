@@ -133,9 +133,8 @@ function MainMenuGui::onWake()
       Version::check();
       checkMOTDBlink();
    }
-   // Commented out to prevent demos from auto playing
+   // Commented out to prevent demos from auto-playing
    // StartDemoTimer();
-   $doRecordDemo = 1;
    buildDemoList();
 }
 

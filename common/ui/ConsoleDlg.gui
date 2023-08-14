@@ -2,14 +2,14 @@
 new GuiControl(ConsoleDlg) {
    profile = "GuiDefaultProfile";
 
-   new GuiWindowCtrl()
+   new GuiWindowCtrl(consoleWindow)
    {
       profile = "GuiWindowProfile";
       position = "0 0";
       extent = "250 720";
       text = "Console";
 
-      new GuiScrollCtrl()
+      new GuiScrollCtrl(consoleText)
       {
          profile = "GuiScrollProfile";
          position = "0 0";
@@ -30,7 +30,7 @@ new GuiControl(ConsoleDlg) {
       {
          profile = "GuiTextEditProfile";
          position = "0 700";
-         extent = "250 20";
+         extent = "1025 20";
          historySize = 20;
          altCommand = "ConsoleEntry::eval();";
          horizSizing = "width";
@@ -53,8 +53,30 @@ function ConsoleEntry::eval()
    ConsoleEntry.setValue("");
 }
 
+function getResolutionHeight() {
+   %res = $pref::Video::resolution;
+   $resolutionHeight = getWords(%res, 1, 1);
+   return $resolutionHeight;
+}
+
+function consoleWindowPrintInfo() {
+   getResolutionHeight();
+   consoleWindow.extent = "1025 " @ ($resolutionHeight / 3);
+   consoleText.extent = "1025 " @ ($resolutionHeight / 3 - 20);
+   ConsoleEntry.position = "0 " @ ($resolutionHeight / 3 - 20);
+}
+
+function consoleWindowDefault() {
+   getResolutionHeight();
+   consoleWindow.extent = "250 " @ $resolutionHeight;
+   consoleText.extent = "250 " @ ($resolutionHeight - 20);
+   ConsoleEntry.position = "0 " @ ($resolutionHeight - 20);
+}
+
 function ToggleConsole(%make)
 {
+   consoleWindowDefault();
+
    if (%make)
    {
       if ($ConsoleActive)

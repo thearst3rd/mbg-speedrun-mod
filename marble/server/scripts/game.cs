@@ -531,7 +531,9 @@ function GameConnection::spawnPlayer(%this)
 
 function restartLevel()
 {
-   LocalClientConnection.respawnPlayer();
+   //LocalClientConnection.respawnPlayer();
+   disconnect();
+   PM_StartMission();
 }
 
 function GameConnection::respawnPlayer(%this)

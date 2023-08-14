@@ -16,8 +16,6 @@ function PlayGui::onWake(%this)
    setFov($pref::Player::defaultFov);
 
    // Timer visibilities
-   TimerHundredths.setVisible(!$pref::extendedTimer);
-   TimerThousandths.setVisible($pref::extendedTimer);
    %this.updateTimeTravelCountdown();
 
    // Turn off any shell sounds...
@@ -175,8 +173,26 @@ function onFrameAdvance(%timeDelta)
    }
    
    %marbleExists = isObject(ServerConnection) && isObject(ServerConnection.getControlObject()) && ServerConnection.getControlObject();
-   if (%marbleExists && $Game::State !$= "End" && !$playingDemo) {
-      setTimeScale(1);
+   if (%marbleExists) {
+      inputDisplay();
+
+      if (!$playingDemo) {
+         setTimeScale(1);
+      }
+   }
+
+   TimerHundredths.setVisible(!$pref::extendedTimer);
+   TimerThousandths.setVisible($pref::extendedTimer);
+   if ($pref::inputDisplay > 0) {
+      if ($playingDemo) {
+         InputDisplay.setVisible(1);
+      } else if (!$playDemo && $pref::inputDisplay == 2) {
+         InputDisplay.setVisible(1);
+      } else {
+         InputDisplay.setVisible(0);
+      }
+   } else {
+      InputDisplay.setVisible(0);
    }
 }
 
@@ -387,4 +403,44 @@ function refreshBottomTextCtrl()
 function refreshCenterTextCtrl()
 {
    CenterPrintText.position = "0 0";
+}
+
+function inputDisplay() {
+
+   // $moveX (for left/right keys)
+   // $moveY (for forward/backward keys)
+   // $moveTrigger0, $moveTrigger1, $moveTrigger2
+
+   %w = 0;
+   %s = 0;
+   if ($moveY != 0) {
+      if ($moveY > 0) {
+         %w = 1;
+      } else {
+         %s = 1;
+      }
+   }
+   w_unpressed.setVisible(!%w);
+   w_pressed.setVisible(%w);
+   s_unpressed.setVisible(!%s);
+   s_pressed.setVisible(%s);
+
+   %a = 0;
+   %d = 0;
+   if ($moveX != 0) {
+      if ($moveX > 0) {
+         %d = 1;
+      } else {
+         %a = 1;
+      }
+   }
+   a_unpressed.setVisible(!%a);
+   a_pressed.setVisible(%a);
+   d_unpressed.setVisible(!%d);
+   d_pressed.setVisible(%d);
+
+   jump_unpressed.setVisible(!$moveTrigger2);
+   jump_pressed.setVisible($moveTrigger2);
+   item_unpressed.setVisible(!$moveTrigger0);
+   item_pressed.setVisible($moveTrigger0);
 }

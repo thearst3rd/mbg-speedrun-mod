@@ -173,7 +173,7 @@ function metrics(%expr)
    }
    else
    {
-      GLEnableMetrics(false);
+      //GLEnableMetrics(false);
       Canvas.popDialog(FrameOverlayGui);
    }
 }

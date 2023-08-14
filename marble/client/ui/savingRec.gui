@@ -7,7 +7,7 @@ new GuiControlProfile ("LoadingGuiContentProfile")
 };
 
 //--- OBJECT WRITE BEGIN ---
-new GuiChunkedBitmapCtrl(savingRec) {
+new GuiChunkedBitmapCtrl(savingRec) { 
    profile = "GuiContentProfile";
    horizSizing = "width";
    vertSizing = "height";
@@ -33,7 +33,7 @@ new GuiChunkedBitmapCtrl(savingRec) {
       bitmap = "./loading/loadingGui";
       wrap = "0";
 
-      new GuiMLTextCtrl(LOAD_MapName) {
+      new GuiMLTextCtrl(LOAD_Saving) {
          profile = "GuiMLTextProfile";
          horizSizing = "right";
          vertSizing = "bottom";
@@ -46,7 +46,7 @@ new GuiChunkedBitmapCtrl(savingRec) {
          allowColorChars = "0";
          maxChars = "-1";
       };
-      new GuiProgressCtrl(LoadingProgress) {
+      new GuiProgressCtrl(SavingProgress) {
          profile = "GuiProgressProfile";
          horizSizing = "right";
          vertSizing = "top";

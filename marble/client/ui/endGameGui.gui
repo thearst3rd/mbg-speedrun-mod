@@ -44,7 +44,7 @@ new GuiControl(EndGameGui) {
          extent = "113 47";
          minExtent = "8 8";
          visible = "1";
-         command = "$missionContinue = 1; disconnect(); Canvas.setContent(SavingRec); schedule(2000, 0, eval, \"setPlayMissionGui();\");";
+         command = "continueButton();";
          accelerator = "enter";
          helpTag = "0";
          text = "play";
@@ -60,7 +60,7 @@ new GuiControl(EndGameGui) {
          extent = "104 48";
          minExtent = "8 8";
          visible = "1";
-         command = "$Game::Qualified = false; disconnect(); Canvas.setContent(SavingRec); schedule(2000, 0, eval, \"PM_StartMission();\");";
+         command = "restartButton();";
          helpTag = "0";
          text = "Prev";
          groupNum = "-1";
@@ -70,3 +70,35 @@ new GuiControl(EndGameGui) {
    };
 };
 //--- OBJECT WRITE END ---
+
+function continueButton() {
+   $missionContinue = 1; 
+   disconnect(); 
+   schedule(2000, 0, eval, "setPlayMissionGui();");
+   savingRecordingScreen();
+}
+
+function restartButton() {
+   $Game::Qualified = false; 
+   disconnect(); 
+   schedule(2000, 0, eval, "PM_StartMission();");
+   savingRecordingScreen(); 
+}
+
+function savingRecordingScreen() {
+   LOAD_Saving.setText( "<font:DomCasualD:32><just:center>" @ "Finalizing Recordings..." );
+   Canvas.setContent(SavingRec);
+   
+   %rtStart = getRealTime();
+   %rtCurrent = %rtStart;
+   %diff = %rtCurrent - %rtStart;
+
+   while (%diff < 2000) {
+      %rtCurrent = getRealTime();
+      %diff = %rtCurrent - %rtStart;
+
+      %totalLoad = %diff / 2000;
+      SavingProgress.setValue(%totalLoad);
+      Canvas.repaint();
+   }
+}

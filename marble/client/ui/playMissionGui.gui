@@ -502,7 +502,7 @@ function PM_StartMission()
 
    // We need to start a server if one isn't already running
    if ($Server::ServerType $= "") {
-      if($doRecordDemo)
+      // if($doRecordDemo)
          recordDemo("~/client/demos/demo.rec", %mission.file);
       createServer(%serverType, %mission.file);
       %conn = new GameConnection(ServerConnection);

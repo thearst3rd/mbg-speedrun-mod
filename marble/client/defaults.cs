@@ -83,3 +83,5 @@ $pref::extendedTimer = 1;
 $pref::showThousandths = 1;
 $pref::showParticles = 0;
 $pref::timeTravelDisplay = 1;
+$pref::inputDisplay = 1;
+$pref::timeskip = 5000;
