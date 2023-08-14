@@ -50,6 +50,11 @@ function Gem::onPickup(%this,%obj,%user,%amount)
 {
    Parent::onPickup(%this,%obj,%user,%amount);
    %user.client.onFoundGem(%amount);
+   %count = PlayGui.gemCount;
+   %time = PlayGui.elapsedTime + PlayGui.TotalBonus;
+   echo(" ");
+   echo("\c6Gem " @ %count @ ":" SPC %time);
+   echo(" ");
    return true;
 }
 

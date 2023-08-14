@@ -78,3 +78,6 @@ $pref::LastReadMOTD = "Welcome to MarbleBlast!";
 $pref::CurrentMOTD = "Welcome to MarbleBlast!";
 
 $Pref::Unix::OpenALFrequency = 44100;
+
+$pref::extendedTimer = 1;
+$pref::showThousandths = 1;

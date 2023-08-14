@@ -49,3 +49,16 @@ function HelpTrigger::onEnterTrigger(%this,%trigger,%obj)
    addHelpLine(%trigger.text, true);
 }
 
+
+//-----------------------------------------------------------------------------
+
+datablock TriggerData(FrameTimeTrigger) {
+   tickPeriodMS = 100;
+};
+
+function FrameTimeTrigger::onEnterTrigger(%this, %trigger, %obj) {
+   %time = PlayGui.elapsedTime + PlayGui.TotalBonus;
+   echo(" ");
+   echo("\c8" @ %trigger.displayName @ ": " @ PlayGui.elapsedTime);
+   echo(" ");
+}

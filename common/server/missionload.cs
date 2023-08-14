@@ -17,6 +17,9 @@ $MissionLoadPause = 5000;
 
 function loadMission( %missionName, %isFirstMission ) 
 {
+   %name = filePath("/~missionload.cs");
+
+   endFireWorks();
    endMission();
    echo("*** LOADING MISSION: " @ %missionName);
    echo("*** Stage 1 load");

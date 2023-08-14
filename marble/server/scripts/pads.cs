@@ -23,6 +23,22 @@ function StartPad::onAdd(%this, %obj)
    %obj.playThread(0,"ambient");
 }
 
+function StartPad::onClientCollision(%this,%obj,%col,%vec, %vecLen, %material)
+{
+	%time = PlayGui.elapsedTime + PlayGui.TotalBonus;
+
+	if (%time > 0) {
+		$go = $go + 1; 
+		if ($go < 2) {
+			echo(" ");
+			echo("\c9First Bounce: " @ %time);
+			echo(" ");
+		}
+	}
+}
+
+	
+
 
 //-----------------------------------------------------------------------------
 

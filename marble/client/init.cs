@@ -87,6 +87,7 @@ function initClient()
    exec("./ui/endGameGui.gui");
    exec("./ui/upsell/UpsellGui.gui");
    EndGameGui.preload();
+   exec("./ui/savingRec.gui");
    exec("./ui/loadingGui.gui");
    exec("./ui/optionsDlg.gui");
    exec("./ui/remapDlg.gui");

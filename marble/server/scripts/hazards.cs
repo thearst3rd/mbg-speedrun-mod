@@ -224,7 +224,7 @@ datablock ParticleData(LandMineParticle)
    gravityCoefficient   = 0.2;
    inheritedVelFactor   = 0.2;
    constantAcceleration = 0.0;
-   lifetimeMS           = 1000;
+   lifetimeMS           = 1000 * $particles;
    lifetimeVarianceMS   = 150;
 
    colors[0]     = "0.56 0.36 0.26 1.0";
@@ -256,7 +256,7 @@ datablock ParticleData(LandMineSmoke)
    gravityCoefficient   = 0;
    inheritedVelFactor   = 0.25;
    constantAcceleration = -0.80;
-   lifetimeMS           = 1200;
+   lifetimeMS           = 1200 * $particles;
    lifetimeVarianceMS   = 300;
    useInvAlpha =  true;
    spinRandomMin = -80.0;
@@ -283,7 +283,7 @@ datablock ParticleEmitterData(LandMineSmokeEmitter)
    velocityVariance = 0.5;
    thetaMin         = 0.0;
    thetaMax         = 180.0;
-   lifetimeMS       = 250;
+   lifetimeMS       = 250 * $particles;
    particles = "LandMineSmoke";
 };
 
@@ -294,7 +294,7 @@ datablock ParticleData(LandMineSparks)
    gravityCoefficient   = 0.0;
    inheritedVelFactor   = 0.2;
    constantAcceleration = 0.0;
-   lifetimeMS           = 500;
+   lifetimeMS           = 500 * $particles;
    lifetimeVarianceMS   = 350;
 
    colors[0]     = "0.60 0.40 0.30 1.0";
@@ -323,7 +323,7 @@ datablock ParticleEmitterData(LandMineSparkEmitter)
    phiVariance      = 360;
    overrideAdvances = false;
    orientParticles  = true;
-   lifetimeMS       = 100;
+   lifetimeMS       = 100 * $particles;
    particles = "LandMineSparks";
 };
 
@@ -344,7 +344,7 @@ datablock ExplosionData(LandMineSubExplosion2)
 datablock ExplosionData(LandMineExplosion)
 {
    soundProfile = ExplodeSfx;
-   lifeTimeMS = 1200;
+   lifeTimeMS = 1200 * $particles;
 
    // Volume particles
    particleEmitter = LandMineEmitter;

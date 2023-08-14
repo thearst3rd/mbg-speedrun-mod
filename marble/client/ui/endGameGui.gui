@@ -44,7 +44,7 @@ new GuiControl(EndGameGui) {
          extent = "113 47";
          minExtent = "8 8";
          visible = "1";
-         command = "setPlayMissionGui();";
+         command = "$missionContinue = 1; disconnect(); Canvas.setContent(SavingRec); schedule(2000, 0, eval, \"setPlayMissionGui();\");";
          accelerator = "enter";
          helpTag = "0";
          text = "play";
@@ -60,7 +60,7 @@ new GuiControl(EndGameGui) {
          extent = "104 48";
          minExtent = "8 8";
          visible = "1";
-         command = "Canvas.popDialog(EndGameGui);restartLevel();";
+         command = "$Game::Qualified = false; disconnect(); Canvas.setContent(SavingRec); schedule(2000, 0, eval, \"PM_StartMission();\");";
          helpTag = "0";
          text = "Prev";
          groupNum = "-1";

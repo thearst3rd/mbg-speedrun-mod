@@ -156,8 +156,23 @@ function PlayGui::startTimer(%this)
 
 function onFrameAdvance(%timeDelta)
 {
-   if($PlayTimerActive)
+   if($PlayTimerActive) {
       PlayGui.updateTimer(%timeDelta);
+   }
+
+   if ($pref::showParticles) {
+      $particles = 1;
+   } else {
+      $particles = 0;
+   }
+   
+   %marbleExists = isObject(ServerConnection) && isObject(ServerConnection.getControlObject()) && ServerConnection.getControlObject();
+   if (%marbleExists && $Game::State !$= "End" && !$playingDemo) {
+      enforceTimeScale();
+   }
+
+   TimerHundredths.setVisible(!$pref::extendedTimer);
+   TimerThousandths.setVisible($pref::extendedTimer);
 }
 
 function PlayGui::stopTimer(%this)
@@ -219,15 +234,25 @@ function PlayGui::updateControls(%this)
    %minutesTen      = (%minutes - %minutesOne) / 10;
    %hundredthOne    = %hundredth % 10; 
    %hundredthTen    = (%hundredth - %hundredthOne) / 10;
+   %thousandths	    = %et % 10;
 
    // Update the controls
-   Min_Ten.setNumber(%minutesTen);
-   Min_One.setNumber(%minutesOne);
-   Sec_Ten.setNumber(%secondsTen);
-   Sec_One.setNumber(%secondsOne);
-   Sec_Tenth.setNumber(%hundredthTen);
-   Sec_Hundredth.setNumber(%hundredthOne);
-   PG_NegSign.setVisible(%drawNeg);
+   Min_Ten1.setNumber(%minutesTen);
+   Min_One1.setNumber(%minutesOne);
+   Sec_Ten1.setNumber(%secondsTen);
+   Sec_One1.setNumber(%secondsOne);
+   Sec_Tenth1.setNumber(%hundredthTen);
+   Sec_Hundredth1.setNumber(%hundredthOne);
+   Sec_Thousandth1.setNumber(%thousandths);
+   PG_NegSign1.setVisible(%drawNeg);
+
+   Min_Ten2.setNumber(%minutesTen);
+   Min_One2.setNumber(%minutesOne);
+   Sec_Ten2.setNumber(%secondsTen);
+   Sec_One2.setNumber(%secondsOne);
+   Sec_Tenth2.setNumber(%hundredthTen);
+   Sec_Hundredth2.setNumber(%hundredthOne);
+   PG_NegSign2.setVisible(%drawNeg);
 }
 
 
@@ -251,3 +276,19 @@ function refreshCenterTextCtrl()
    CenterPrintText.position = "0 0";
 }
 
+function enforceTimeScale() {
+   %et = playGui.elapsedTime + playGui.totalBonus;
+   %rt = getRealTime(); 
+
+   if (%et < 100 || $wasPaused) {
+      $recTimeOffset = %rt - %et;
+      $wasPaused = 0;
+   } else if (%et > 100) {
+      %timeCompare = %rt - %et;
+      %diff = mFloor(%timeCompare - $recTimeOffset);
+
+      if (mAbs(%diff) > 1000) {
+         disconnect();
+      }
+   }
+}

@@ -89,6 +89,14 @@ function onMissionLoaded()
    // Nothing special for now, just start up the game play.
 
    $Game::GemCount = countGems(MissionGroup);
+   $powerupGrabs["HelicopterItem"] = 0;
+   $powerupGrabs["SuperBounceItem"] = 0;
+   $powerupGrabs["AntiGravityItem"] = 0;
+   $powerupGrabs["SuperSpeedItem"] = 0;
+   $powerupGrabs["SuperJumpItem"] = 0;
+   $powerupGrabs["ShockAbsorberItem"] = 0;
+   $powerupGrabs["TimeTravelItem"] = 0;
+   $go = 0;
 
    setGravityDir("1 0 0 0 -1 0 0 0 -1",true);
 
@@ -108,6 +116,16 @@ function onMissionReset()
 {
    setGravityDir("1 0 0 0 -1 0 0 0 -1",true);
    endFireWorks();
+
+   $Game::GemCount = countGems(MissionGroup);
+   $powerupGrabs["HelicopterItem"] = 0;
+   $powerupGrabs["SuperBounceItem"] = 0;
+   $powerupGrabs["AntiGravityItem"] = 0;
+   $powerupGrabs["SuperSpeedItem"] = 0;
+   $powerupGrabs["SuperJumpItem"] = 0;
+   $powerupGrabs["ShockAbsorberItem"] = 0;
+   $powerupGrabs["TimeTravelItem"] = 0;
+   $go = 0;
    
    // Reset the players and inform them we're starting
    for( %clientIndex = 0; %clientIndex < ClientGroup.getCount(); %clientIndex++ ) {
@@ -190,6 +208,7 @@ function pauseGame()
 {
    if ($Server::ServerType $= "SinglePlayer")
       $gamePaused = true;
+      $wasPaused = 1;
 }
 
 function resumeGame()
@@ -275,6 +294,9 @@ function State::end()
    PlayGUI.stopTimer();
    serverplay2d(WonRaceSfx);
    startFireWorks(EndPoint);
+   echo(" ");
+   echo("\c9Elapsed Time: " @ playgui.elapsedtime);
+   echo(" ");
    $Game::StateSchedule = schedule( 2000, 0, "endGame");
 }
 

@@ -15,7 +15,7 @@ datablock ParticleData(BounceParticle)
    windCoefficient      = 0;
    inheritedVelFactor   = 0;
    constantAcceleration = -2;
-   lifetimeMS           = 500;
+   lifetimeMS           = 500 * $particles;
    lifetimeVarianceMS   = 100;
    useInvAlpha =  true;
    spinSpeed     = 90;
@@ -43,7 +43,7 @@ datablock ParticleEmitterData(MarbleBounceEmitter)
    velocityVariance = 0.25;
    thetaMin         = 80.0;
    thetaMax         = 90.0;
-   lifetimeMS       = 250;
+   lifetimeMS       = 250 * $particles;
    particles = "BounceParticle";
 };
 
@@ -57,7 +57,7 @@ datablock ParticleData(TrailParticle)
    windCoefficient      = 0;
    inheritedVelFactor   = 1;
    constantAcceleration = 0;
-   lifetimeMS           = 100;
+   lifetimeMS           = 100 * $particles;
    lifetimeVarianceMS   = 10;
    useInvAlpha =  true;
    spinSpeed     = 0;
@@ -83,7 +83,7 @@ datablock ParticleEmitterData(MarbleTrailEmitter)
    velocityVariance = 0.25;
    thetaMin         = 80.0;
    thetaMax         = 90.0;
-   lifetimeMS       = 10000;
+   lifetimeMS       = 10000 * $particles;
    particles = "TrailParticle";
 };
 
@@ -96,7 +96,7 @@ datablock ParticleData(SuperJumpParticle)
    gravityCoefficient   = 0;
    inheritedVelFactor   = 0.1;
    constantAcceleration = 0;
-   lifetimeMS           = 1000;
+   lifetimeMS           = 1000 * $particles;
    lifetimeVarianceMS   = 150;
    spinSpeed     = 90;
    spinRandomMin = -90.0;
@@ -123,7 +123,7 @@ datablock ParticleEmitterData(MarbleSuperJumpEmitter)
    velocityVariance = 0.25;
    thetaMin         = 150.0;
    thetaMax         = 170.0;
-   lifetimeMS       = 5000;
+   lifetimeMS       = 5000 * $particles;
    particles = "SuperJumpParticle";
 };
 
@@ -136,7 +136,7 @@ datablock ParticleData(SuperSpeedParticle)
    gravityCoefficient   = 0;
    inheritedVelFactor   = 0.25;
    constantAcceleration = 0;
-   lifetimeMS           = 1500;
+   lifetimeMS           = 1500 * $particles;
    lifetimeVarianceMS   = 150;
 
    colors[0]     = "0.8 0.8 0 0";
@@ -160,7 +160,7 @@ datablock ParticleEmitterData(MarbleSuperSpeedEmitter)
    velocityVariance = 0.25;
    thetaMin         = 130.0;
    thetaMax         = 170.0;
-   lifetimeMS       = 5000;
+   lifetimeMS       = 5000 * $particles;
    particles = "SuperSpeedParticle";
 };
 
@@ -174,7 +174,7 @@ datablock ParticleEmitterData(MarbleSuperBounceEmitter)
    velocityVariance = 0.25;
    thetaMin         = 80.0;
    thetaMax         = 90.0;
-   lifetimeMS       = 250;
+   lifetimeMS       = 250 * $particles;
    particles = "MarbleStar";
 };
 
@@ -188,7 +188,7 @@ datablock ParticleEmitterData(MarbleShockAbsorberEmitter)
    velocityVariance = 0.25;
    thetaMin         = 80.0;
    thetaMax         = 90.0;
-   lifetimeMS       = 250;
+   lifetimeMS       = 250 * $particles;
    particles = "MarbleStar";
 };
 
@@ -202,7 +202,7 @@ datablock ParticleEmitterData(MarbleHelicopterEmitter)
    velocityVariance = 0.25;
    thetaMin         = 80.0;
    thetaMax         = 90.0;
-   lifetimeMS       = 5000;
+   lifetimeMS       = 5000 * $particles;
    particles = "MarbleStar";
 };
 

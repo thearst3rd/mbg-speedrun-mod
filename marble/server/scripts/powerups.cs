@@ -25,6 +25,32 @@ function PowerUp::onPickup(%this,%obj,%user,%amount)
       %user.setPowerUp(%this);
    }
    Parent::onPickup(%this, %obj, %user, %amount);
+   if (%this.getName() $= "HelicopterItem") {
+      %name = "Gyrocopter";
+   }
+   if (%this.getName() $= "SuperBounceItem") {
+      %name = "Super Bounce";
+   }
+   if (%this.getName() $= "AntiGravityItem") {
+      %name = "Gravity Switch";
+   }
+   if (%this.getName() $= "SuperSpeedItem") {
+      %name = "Super Speed";
+   }
+   if (%this.getName() $= "SuperJumpItem") {
+      %name = "Super Jump";
+   }
+   if (%this.getName() $= "ShockAbsorberItem") {
+      %name = "Shock Absorber";
+   }
+   if (%this.getName() $= "TimeTravelItem") {
+      %name = "Time Travel";
+   }
+   $powerupGrabs[%this.getName()] = $powerupGrabs[%this.getName()] + 1;
+   %time = PlayGui.elapsedTime + PlayGui.TotalBonus;
+   echo(" ");
+   echo("\c7" @ %name @ " " @ $powerupGrabs[%this.getName()] @ ":" SPC %time);
+   echo(" ");
    return true;
 }
 

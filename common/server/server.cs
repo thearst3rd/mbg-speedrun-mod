@@ -69,8 +69,11 @@ function destroyServer()
       MissionCleanup.delete();
    if (isObject($ServerGroup))
       $ServerGroup.delete();
-   if (isObject(MissionInfo))
+   if (isObject(MissionInfo) && !$missionContinue) {
       MissionInfo.delete();
+   } else {
+      $missionContinue = 0;
+   }
 
    // Delete all the connections:
    while (ClientGroup.getCount())

@@ -288,3 +288,52 @@ function GuiMLTextCtrl::onURL(%this, %url)
    gotoWebPage( %url );
 }   
 
+package TASInfo {
+    // Function that is done every frame 
+    function onFrameAdvance(%delta) {
+        Parent::onFrameAdvance(%delta);
+
+        // Check if the marble exists
+        %marbleExists = isObject(ServerConnection) && isObject(ServerConnection.getControlObject()) && ServerConnection.getControlObject();
+        if (%marbleExists && $printInfo) {
+            // Marble object
+            %marble = ServerConnection.getControlObject();
+            // Get the physics variables
+            %position = %marble.getPosition();
+            %velocity = %marble.getVelocity();
+            %angularVelocity = %marble.getAngularVelocity();
+            // Current time since start
+            %time = PlayGui.elapsedTime + PlayGui.bonusTime;
+            // Log to console
+            echo("V:" SPC %velocity SPC "P:" SPC %position SPC "A:" SPC %angularVelocity SPC "Frame:" SPC $currentFrame SPC "Time:" SPC %time);
+        }
+
+        // Frame counter
+        %gameRunning = isObject(ServerConnection);
+        if (!%gameRunning) {
+            $currentFrame = 0;
+        } else {
+            $currentFrame = $currentFrame + 1;
+        }
+    }
+};
+activatePackage(TASInfo);
+ 
+
+GlobalActionMap.bindCmd(keyboard, F1, "$dorecorddemo=1;", "");
+GlobalActionMap.bindCmd(keyboard, F2, "echo(PlayGui.elapsedTime);", "");
+GlobalActionMap.bindCmd(keyboard, F3, "echo(PlayGui.totalBonus);", "");
+GlobalActionMap.bindCmd(keyboard, F4, "metrics(fps);", "");
+GlobalActionMap.bindCmd(keyboard, F5, "$printInfo = true;", "");
+GlobalActionMap.bindCmd(keyboard, F6, "$printInfo = false;", "");
+GlobalActionMap.bindCmd(keyboard, F7, "$testcheats=1;", "");
+
+GlobalActionMap.bindCmd(keyboard, NumPad0, "timeskip(5000);", "");
+GlobalActionMap.bindCmd(keyboard, NumPad1, "setTimeScale(0.05);", "");
+GlobalActionMap.bindCmd(keyboard, NumPad2, "setTimeScale(0.25);", "");
+GlobalActionMap.bindCmd(keyboard, NumPad3, "setTimeScale(1);", "");
+GlobalActionMap.bindCmd(keyboard, NumPad4, "timeskip(1000);", "");
+GlobalActionMap.bindCmd(keyboard, NumPad5, "setTimeScale(4);", "");
+GlobalActionMap.bindCmd(keyboard, NumPad7, "setResolution(1920,1080);", "");
+GlobalActionMap.bindCmd(keyboard, NumPad8, "setResolution(1280,720);", "");
+moveMap.bindCmd(keyboard, "R", "", "resumeGame();disconnect();PM_StartMission();");

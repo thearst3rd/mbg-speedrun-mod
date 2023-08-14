@@ -50,6 +50,13 @@ function TriggerGotoTarget::onEnterTrigger(%this,%trigger,%obj)
          if(%trigger.delayTargetTime !$= "")
             %plat.delayTargetTime = %trigger.delayTargetTime;
          %plat.setTargetPosition(%trigger.targetTime);
+
+	 %time = PlayGui.elapsedTime + PlayGui.TotalBonus;
+	 if (%time > 0) {
+		echo(" ");
+		echo("\c8Enter Trigger: " @ %time);
+		echo(" ");
+	 }
       }
    }
    // Entering an out of bounds area

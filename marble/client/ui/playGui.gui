@@ -171,17 +171,17 @@ new GameTSCtrl(PlayGUI) {
       bitmap = "./game/numbers/0.png";
       wrap = "0";
    };
-   new GuiControl() {
+   new GuiControl(TimerThousandths) {
       profile = "GuiDefaultProfile";
       horizSizing = "center";
       vertSizing = "bottom";
       position = "215 1";
-      extent = "210 58";
+      extent = "234 58";
       minExtent = "8 8";
       visible = "1";
       helpTag = "0";
 
-      new GuiBitmapCtrl(Min_Ten) {
+      new GuiBitmapCtrl(Min_Ten1) {
          profile = "GuiDefaultProfile";
          horizSizing = "right";
          vertSizing = "bottom";
@@ -193,7 +193,7 @@ new GameTSCtrl(PlayGUI) {
          bitmap = "./game/numbers/0.png";
          wrap = "0";
       };
-      new GuiBitmapCtrl(Min_One) {
+      new GuiBitmapCtrl(Min_One1) {
          profile = "GuiDefaultProfile";
          horizSizing = "right";
          vertSizing = "bottom";
@@ -217,7 +217,7 @@ new GameTSCtrl(PlayGUI) {
          bitmap = "./game/numbers/colon.png";
          wrap = "0";
       };
-      new GuiBitmapCtrl(Sec_Ten) {
+      new GuiBitmapCtrl(Sec_Ten1) {
          profile = "GuiDefaultProfile";
          horizSizing = "right";
          vertSizing = "bottom";
@@ -229,7 +229,7 @@ new GameTSCtrl(PlayGUI) {
          bitmap = "./game/numbers/3.png";
          wrap = "0";
       };
-      new GuiBitmapCtrl(Sec_One) {
+      new GuiBitmapCtrl(Sec_One1) {
          profile = "GuiDefaultProfile";
          horizSizing = "right";
          vertSizing = "bottom";
@@ -253,7 +253,7 @@ new GameTSCtrl(PlayGUI) {
          bitmap = "./game/numbers/point.png";
          wrap = "0";
       };
-      new GuiBitmapCtrl(Sec_Tenth) {
+      new GuiBitmapCtrl(Sec_Tenth1) {
          profile = "GuiDefaultProfile";
          horizSizing = "right";
          vertSizing = "bottom";
@@ -265,7 +265,7 @@ new GameTSCtrl(PlayGUI) {
          bitmap = "./game/numbers/1.png";
          wrap = "0";
       };
-      new GuiBitmapCtrl(Sec_Hundredth) {
+      new GuiBitmapCtrl(Sec_Hundredth1) {
          profile = "GuiDefaultProfile";
          horizSizing = "right";
          vertSizing = "bottom";
@@ -277,7 +277,138 @@ new GameTSCtrl(PlayGUI) {
          bitmap = "./game/numbers/5.png";
          wrap = "0";
       };
-      new GuiBitmapCtrl(PG_NegSign) {
+      new GuiBitmapCtrl(Sec_Thousandth1) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "191 0";
+         extent = "43 55";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/1.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(PG_NegSign1) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "0 0";
+         extent = "43 55";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/dash.png";
+         wrap = "0";
+      };
+   };
+   new GuiControl(TimerHundredths) {
+      profile = "GuiDefaultProfile";
+      horizSizing = "center";
+      vertSizing = "bottom";
+      position = "215 1";
+      extent = "210 58";
+      minExtent = "8 8";
+      visible = "1";
+      helpTag = "0";
+
+      new GuiBitmapCtrl(Min_Ten2) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "23 0";
+         extent = "43 55";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/0.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(Min_One2) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "47 0";
+         extent = "43 55";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/2.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(MinSec_Colon) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "67 0";
+         extent = "43 55";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/colon.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(Sec_Ten2) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "83 0";
+         extent = "43 55";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/3.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(Sec_One2) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "107 0";
+         extent = "43 55";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/5.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(MinSec_Point) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "127 0";
+         extent = "43 55";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/point.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(Sec_Tenth2) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "143 0";
+         extent = "43 55";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/1.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(Sec_Hundredth2) {
+         profile = "GuiDefaultProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "167 0";
+         extent = "43 55";
+         minExtent = "8 8";
+         visible = "1";
+         helpTag = "0";
+         bitmap = "./game/numbers/5.png";
+         wrap = "0";
+      };
+      new GuiBitmapCtrl(PG_NegSign2) {
          profile = "GuiDefaultProfile";
          horizSizing = "right";
          vertSizing = "bottom";

@@ -140,6 +140,7 @@ function formatTime(%time)
       %isNeg = "-\t";
    }
    %hundredth = mFloor((%time % 1000) / 10);
+   %thousandths	    = %time % 10;
    %totalSeconds = mFloor(%time / 1000);
    %seconds = %totalSeconds % 60;
    %minutes = (%totalSeconds - %seconds) / 60;
@@ -151,7 +152,13 @@ function formatTime(%time)
    %hundredthOne = %hundredth % 10; 
    %hundredthTen = (%hundredth - %hundredthOne) / 10;
 
-   return %isNeg @ %minutesTen @ %minutesOne @ ":" @
-       %secondsTen @ %secondsOne @ "." @
-       %hundredthTen @ %hundredthOne;
+   if ($pref::showThousandths == 1) {
+       return %isNeg @ %minutesTen @ %minutesOne @ ":" @
+           %secondsTen @ %secondsOne @ "." @
+           %hundredthTen @ %hundredthOne @ %thousandths;
+   } else {
+       return %isNeg @ %minutesTen @ %minutesOne @ ":" @
+           %secondsTen @ %secondsOne @ "." @
+           %hundredthTen @ %hundredthOne;
+   }
 }
