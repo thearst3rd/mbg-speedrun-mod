@@ -12,6 +12,8 @@
 
 function PlayGui::onWake(%this)
 {
+   $getMissionName = MissionInfo.name;
+
    // Actually set FOV...
    setFov($pref::Player::defaultFov);
 

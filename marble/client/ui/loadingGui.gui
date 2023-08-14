@@ -64,7 +64,7 @@ new GuiChunkedBitmapCtrl(LoadingGui) {
          extent = "88 50";
          minExtent = "8 8";
          visible = "1";
-         command = "disconnect();";
+         command = "disconnect(); saveRec(0);";
          helpTag = "0";
          text = "play";
          groupNum = "-1";

@@ -85,3 +85,5 @@ $pref::showParticles = 0;
 $pref::timeTravelDisplay = 1;
 $pref::inputDisplay = 1;
 $pref::timeskip = 5000;
+$pref::enableFrameRateUnlock = 1;
+$pref::setVerticalSync = 0;

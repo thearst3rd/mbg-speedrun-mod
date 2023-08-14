@@ -60,7 +60,7 @@ new GuiControl(EndGameGui) {
          extent = "104 48";
          minExtent = "8 8";
          visible = "1";
-         command = "restartButton();";
+         command = "replayButton();";
          helpTag = "0";
          text = "Prev";
          groupNum = "-1";
@@ -74,31 +74,42 @@ new GuiControl(EndGameGui) {
 function continueButton() {
    $missionContinue = 1; 
    disconnect(); 
-   schedule(2000, 0, eval, "setPlayMissionGui();");
-   savingRecordingScreen();
+   saveRec(1);
+   setPlayMissionGui();
 }
 
-function restartButton() {
+function replayButton() {
    $Game::Qualified = false; 
-   disconnect(); 
-   schedule(2000, 0, eval, "PM_StartMission();");
-   savingRecordingScreen(); 
+   disconnect();
+   saveRec(0);
+   PM_StartMission();
 }
 
-function savingRecordingScreen() {
-   LOAD_Saving.setText( "<font:DomCasualD:32><just:center>" @ "Finalizing Recordings..." );
-   Canvas.setContent(SavingRec);
-   
-   %rtStart = getRealTime();
-   %rtCurrent = %rtStart;
-   %diff = %rtCurrent - %rtStart;
+function saveRec(%this) {
+   %path = "marble/client/demos/";
+   %file = "marble/client/demos/" @ $currentRecording;
+   %timer = 100;
 
-   while (%diff < 2000) {
-      %rtCurrent = getRealTime();
-      %diff = %rtCurrent - %rtStart;
-
-      %totalLoad = %diff / 2000;
-      SavingProgress.setValue(%totalLoad);
-      Canvas.repaint();
+   switch$(%this)
+   {
+      case 0:
+         schedule(%timer, 0, deleteFile, %file);
+      case 1:
+         %rename = %path @ $getMissionName SPC PlayGui.elapsedTime @ ".rec";
+      case 2:
+         %rename = %path @ $getMissionName SPC "Unfinished.rec";
    }
+
+   if (getFileSize(%rename) > 0) {
+      %inc = 1;
+      %base = %path @ fileBase(%rename);
+
+      while (getFileSize(%rename) > 0) {
+         %suffix = "(" @ %inc @ ")";
+         %rename = %base SPC %suffix @ ".rec";
+         %inc++;
+      }
+   }
+
+   schedule(%timer, 0, moveFile, %file, %rename);
 }

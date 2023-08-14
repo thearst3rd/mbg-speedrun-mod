@@ -386,12 +386,32 @@ function toggleCheats() {
    return $testcheats;
 }
 
+function restartHotKey() {
+   %marbleExists = isObject(ServerConnection) && isObject(ServerConnection.getControlObject()) && ServerConnection.getControlObject();
+   if (%marbleExists && $Game::State !$= "End") {
+      resumeGame();
+      restartLevel();
+   }
+}
+
+function toggleFrameRateLocker() {
+   $pref::enableFrameRateUnlock = !$pref::enableFrameRateUnlock;
+   enableFrameRateUnlock($pref::enableFrameRateUnlock);
+}
+
+function toggleVerticalSync() {
+   $pref::setVerticalSync = !$pref::setVerticalSync;
+   setVerticalSync($pref::setVerticalSync);
+}
+
 GlobalActionMap.bindCmd(keyboard, "alt 1", "toggleFPS();", "");
 GlobalActionMap.bindCmd(keyboard, "alt 2", "toggleExtendedTimer();", "");
 GlobalActionMap.bindCmd(keyboard, "alt 3", "toggletimeTravelDisplay();", "");
 GlobalActionMap.bindCmd(keyboard, "alt 4", "toggleInputDisplay();", "");
 GlobalActionMap.bindCmd(keyboard, "alt 5", "toggleShowThousandths(); refreshThousandths();", "");
-GlobalActionMap.bindCmd(keyboard, "alt 6", "toggleShowParticles();", "");
+GlobalActionMap.bindCmd(keyboard, "alt 6", "toggleShowParticles(); schedule(10,0,restartHotKey);", "");
+GlobalActionMap.bindCmd(keyboard, "alt 7", "toggleFrameRateLocker();", "");
+GlobalActionMap.bindCmd(keyboard, "alt 8", "toggleVerticalSync();", "");
 
 GlobalActionMap.bindCmd(keyboard, NumPad0, "timeskip($pref::timeskip);", "");
 GlobalActionMap.bindCmd(keyboard, NumPad1, "setTimeScale(0.05);", "");
@@ -403,4 +423,4 @@ GlobalActionMap.bindCmd(keyboard, NumPad6, "toggleCheats();", "");
 GlobalActionMap.bindCmd(keyboard, NumPad7, "setResolution(1920,1080);", "");
 GlobalActionMap.bindCmd(keyboard, NumPad8, "setResolution(1280,720);", "");
 GlobalActionMap.bindCmd(keyboard, NumPad9, "togglePrintInfo();", "");
-moveMap.bindCmd(keyboard, "R", "", "resumeGame();restartLevel();");
+moveMap.bindCmd(keyboard, "R", "restartHotKey();", "");

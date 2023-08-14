@@ -43,7 +43,7 @@ new GuiControl(ExitGameDlg) {
          extent = "88 52";
          minExtent = "8 8";
          visible = "1";
-         command = "Canvas.popDialog(ExitGameDlg); resumeGame(); disconnect();";
+         command = "escapeGame();";
          accelerator = "return";
          helpTag = "0";
          text = "YES";
@@ -88,3 +88,11 @@ new GuiControl(ExitGameDlg) {
    };
 };
 //--- OBJECT WRITE END ---
+
+
+function escapeGame() {
+   Canvas.popDialog(ExitGameDlg); 
+   resumeGame(); 
+   disconnect();
+   MessageBoxYesNo("", "Save Recording?", "saveRec(2);", "saveRec(0);");
+}

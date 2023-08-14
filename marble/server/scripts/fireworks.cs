@@ -13,7 +13,7 @@ datablock ParticleData(FireWorkSmoke)
    inheritedVelFactor   = 0;
    windCoefficient      = 0;
    constantAcceleration = 0;
-   lifetimeMS           = 2000;
+   lifetimeMS           = 2000 * $particles;
    lifetimeVarianceMS   = 200;
    spinSpeed     = 0;
    spinRandomMin = -90.0;
@@ -46,7 +46,7 @@ datablock ParticleEmitterData(FireWorkSmokeEmitter)
    phiVariance      = 360;
    //overrideAdvances = false;
    //orientParticles  = true;
-   lifetimeMS       = 5000;
+   lifetimeMS       = 5000  * $particles;
    particles = "FireWorkSmoke";
 };
 
@@ -61,7 +61,7 @@ datablock ParticleData(RedFireWorkSpark)
    windCoefficient      = 0;
    inheritedVelFactor   = 0.2;
    constantAcceleration = 0.0;
-   lifetimeMS           = 500;
+   lifetimeMS           = 500 * $particles;
    lifetimeVarianceMS   = 50;
    useInvAlpha   = true;
 
@@ -91,7 +91,7 @@ datablock ParticleEmitterData(RedFireWorkSparkEmitter)
    phiVariance      = 360;
    overrideAdvances = false;
    orientParticles  = false;
-   lifetimeMS       = 300;
+   lifetimeMS       = 300  * $particles;
    particles = "RedFireWorkSpark";
 };
 
@@ -117,7 +117,7 @@ datablock ParticleData(RedFireWorkTrail)
    inheritedVelFactor   = 0;
    windCoefficient      = 0;
    constantAcceleration = 0;
-   lifetimeMS           = 600;
+   lifetimeMS           = 600 * $particles;
    lifetimeVarianceMS   = 100;
    spinSpeed     = 0;
    spinRandomMin = -90.0;
@@ -150,7 +150,7 @@ datablock ParticleEmitterData(RedFireWorkTrailEmitter)
    phiVariance      = 360;
    //overrideAdvances = false;
    //orientParticles  = true;
-   lifetimeMS       = 5000;
+   lifetimeMS       = 5000 * $particles;
    particles = "RedFireWorkTrail";
 };
 
@@ -186,7 +186,7 @@ datablock DebrisData(RedFireWork)
 datablock ExplosionData(RedFireWorkExplosion)
 {
    //soundProfile = ExplodeSfx;
-   lifeTimeMS = 1200;
+   lifeTimeMS = 1200 * $particles;
    offset = 0.1;
    
    debris = RedFireWork;
@@ -217,7 +217,7 @@ datablock ParticleData(BlueFireWorkSpark)
    windCoefficient      = 0;
    inheritedVelFactor   = 0.2;
    constantAcceleration = 0.0;
-   lifetimeMS           = 2000;
+   lifetimeMS           = 2000 * $particles;
    lifetimeVarianceMS   = 200;
    useInvAlpha   = true;
 
@@ -247,7 +247,7 @@ datablock ParticleEmitterData(BlueFireWorkSparkEmitter)
    phiVariance      = 360;
    overrideAdvances = false;
    orientParticles  = false;
-   lifetimeMS       = 300;
+   lifetimeMS       = 300  * $particles;
    particles = "BlueFireWorkSpark";
 };
 
@@ -273,7 +273,7 @@ datablock ParticleData(BlueFireWorkTrail)
    inheritedVelFactor   = 0;
    windCoefficient      = 0;
    constantAcceleration = 0;
-   lifetimeMS           = 600;
+   lifetimeMS           = 600 * $particles;
    lifetimeVarianceMS   = 100;
    spinSpeed     = 0;
    spinRandomMin = -90.0;
@@ -306,7 +306,7 @@ datablock ParticleEmitterData(BlueFireWorkTrailEmitter)
    phiVariance      = 360;
    //overrideAdvances = false;
    //orientParticles  = true;
-   lifetimeMS       = 5000;
+   lifetimeMS       = 5000  * $particles;
    particles = "BlueFireWorkTrail";
 };
 
@@ -342,7 +342,7 @@ datablock DebrisData(BlueFireWork)
 datablock ExplosionData(BlueFireWorkExplosion)
 {
    //soundProfile = ExplodeSfx;
-   lifeTimeMS = 1200;
+   lifeTimeMS = 1200 * $particles;
    offset = 0.2;
    
    debris = BlueFireWork;
@@ -424,7 +424,3 @@ function launchWave(%wave,%position, %rotation)
       $Game::FireWorkSchedule = schedule(%delay,0,"launchWave",%wave + 1,%position, %rotation);
    }
 }
-
-
-
-
