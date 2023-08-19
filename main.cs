@@ -421,13 +421,14 @@ function demoRecording()
    echo("of personal bests being overwritten.");
    echo("" SPC "- Restarts or canceling a load will delete the current");
    echo("  " SPC "unfinished recording.");
-   echo("" SPC "- Replay will delete a completed run and return the");
-   echo("  " SPC "player to the start to continue attempts.");
-   echo("" SPC "- Continue will save the recording with the level");
-   echo("  " SPC "name and elapsed time, and exit to level select.");
-   echo("" SPC "- If the player exits a level, the player will");
-   echo("  " SPC "be prompted if they would like to keep the attempt");
-   echo("  " SPC "as a blooper or to delete the recording.\n");
+   echo("" SPC "- Replay will save the recording with the level name");
+   echo("  " SPC "and elapsed time in the _Trash folder, then reload");
+   echo("  " SPC "the mission to immediately continue attempts.");
+   echo("" SPC "- Continue will save the recording with the level name");
+   echo("  " SPC "and elapsed time, then exit to level select.");
+   echo("" SPC "- If the player exits a level, the player will be");
+   echo("  " SPC "prompted if they would like to keep the attempt as a");
+   echo("  " SPC "blooper or to delete the recording.\n");
 }
 
 function toggleFPS() {

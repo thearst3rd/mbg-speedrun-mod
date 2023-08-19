@@ -582,13 +582,13 @@ function PM_setSelected( %row )
 
    if (%next >= PM_missionList.rowCount())
       %next = PM_missionList.rowCount() - 1;
-   PM_next.command = "PM_setSelected(" @ %next @ ");";
+   PM_next.command = "setTimeScale(1); PM_setSelected(" @ %next @ ");";
 
    %prev = %row-1;
    PM_prev.setActive(%prev >= 0);
    if (%prev < 0 )
       %prev = 0;
-   PM_prev.command = "PM_setSelected(" @ %prev @ ");";
+   PM_prev.command = "setTimeScale(1); PM_setSelected(" @ %prev @ ");";
 }
 
 

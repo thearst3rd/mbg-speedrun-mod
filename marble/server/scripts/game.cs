@@ -293,9 +293,7 @@ function State::end()
    PlayGUI.stopTimer();
    serverplay2d(WonRaceSfx);
    startFireWorks(EndPoint);
-   echo(" ");
-   echo("\c9Elapsed Time: " @ playgui.elapsedtime);
-   echo(" ");
+   echo("\n\c9Completion Time: " @ playgui.elapsedtime @ "\n");
    $Game::StateSchedule = schedule( 2000, 0, "endGame");
 }
 
@@ -445,7 +443,9 @@ function GameConnection::onEnterPad(%this)
 
       if ($Game::GemCount && %this.gemCount < $Game::GemCount) {
          %this.play2d(MissingGemsSfx);
-         messageClient(%this, 'MsgMissingGems', '\c0You can\'t finish without all the gems!!');
+         %message = "\c0You can\'t finish without all the gems!!";
+         echo("\n\c9Elapsed Time: " @ playgui.elapsedtime @ "\n");
+         messageClient(%this, 'MsgMissingGems', %message);
       }
       else {
          %this.player.setMode(Victory);

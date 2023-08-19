@@ -81,7 +81,7 @@ function continueButton() {
 function replayButton() {
    $Game::Qualified = false; 
    disconnect();
-   saveRec(0);
+   saveRec(3);
    PM_StartMission();
 }
 
@@ -98,6 +98,13 @@ function saveRec(%this) {
          %rename = %path @ $getMissionName SPC PlayGui.elapsedTime @ ".rec";
       case 2:
          %rename = %path @ $getMissionName SPC "Unfinished.rec";
+      case 3:
+         %path = "marble/client/demos/_Trash/";
+         %checkExist = findNextFile(%path @ "*.rec");
+         if (%checkExist == "") {
+            mkdir(%path);
+         } 
+         %rename = %path @ $getMissionName SPC PlayGui.elapsedTime @ ".rec";
    }
 
    if (getFileSize(%rename) > 0) {
