@@ -118,5 +118,12 @@ function saveRec(%this) {
       }
    }
 
+   if (%this > 0) {
+      $lastRec = %rename;
+   }
    schedule(%timer, 0, moveFile, %file, %rename);
+}
+
+function playLastRec() {
+   playdemo($lastRec);
 }

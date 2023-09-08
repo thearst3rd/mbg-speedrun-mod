@@ -444,7 +444,7 @@ function GameConnection::onEnterPad(%this)
       if ($Game::GemCount && %this.gemCount < $Game::GemCount) {
          %this.play2d(MissingGemsSfx);
          %time = mFloatLength(playgui.elapsedTime / 1000, 3);
-         %message = "\c0You can\'t finish without all the gems!!";
+         %message = "\c0You can\'t finish without all the gems!! (" @ %time @ ")";
          echo("\n\c9You can\'t finish without all the gems!! (" @ %time @ ")\n");
          messageClient(%this, 'MsgMissingGems', %message);
       }
