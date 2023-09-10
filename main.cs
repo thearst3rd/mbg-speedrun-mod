@@ -359,6 +359,7 @@ function hotKeys()
    echo("" SPC "NumPad1 = 5% speed");
    echo("" SPC "NumPad2 = 25% speed");
    echo("" SPC "NumPad3 = 100% speed");
+   echo("" SPC "NumPad4 = One second time skip");
    echo("" SPC "NumPad5 = 400% speed");
    echo("" SPC "NumPad6 = Toggles $testcheats");
    echo("" SPC "NumPad7 = Sets resolution to 1920x1080");

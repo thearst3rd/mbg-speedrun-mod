@@ -238,7 +238,7 @@ new GuiChunkedBitmapCtrl(playMissionGui) {
             extent = "79 61";
             minExtent = "8 8";
             visible = "1";
-            command = "disconnect(); Canvas.setContent(MainMenuGui);";
+            command = "saveCurrentSelect(); $levelSelect = 0; disconnect(); Canvas.setContent(MainMenuGui);";
             accelerator = "escape";
             helpTag = "0";
             text = "play";
@@ -377,9 +377,16 @@ new GuiChunkedBitmapCtrl(playMissionGui) {
 //----------------------------------------
 function playMissionGui::onWake()
 {
-   if($MissionType $= "")
+   if($MissionType $= "") {
       $MissionType = "Beginner";
+   }
    PMSetMissionTab($MissionType);
+   if($savedLevelSelect !$= "") {
+      PM_setSelected($savedLevelSelect - 1);
+      if ($levelSelect) {
+         $savedLevelSelect = "";
+      }
+   }
 }
 
 function PMSetMissionTab(%tab)
@@ -522,6 +529,7 @@ function PM_StartMission()
 
 function onDemoPlay(%misFile)
 {
+   saveCurrentSelect();
    $playingDemo = true;
    createServer("SinglePlayer", %misFile);
    %conn = new GameConnection(ServerConnection);
@@ -535,10 +543,15 @@ function onDemoPlayDone(%forced)
 {
    $playingDemo = false;
    disconnect();
-   if(%forced)
+   if (!$levelSelect) {
       Canvas.setContent(MainMenuGui);
-   else
-      runPresentation();
+   } else {
+      setPlayMissionGui();
+   }
+}
+
+function saveCurrentSelect() {
+   $savedLevelSelect = PM_missionList.getSelectedId();
 }
 
 //----------------------------------------

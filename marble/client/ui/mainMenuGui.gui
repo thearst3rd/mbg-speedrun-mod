@@ -44,7 +44,7 @@ new GuiChunkedBitmapCtrl(MainMenuGui) {
          extent = "270 95";
          minExtent = "8 8";
          visible = "1";
-         command = "StopDemoTimer(); Canvas.setContent(playMissionGui);";
+         command = "StopDemoTimer(); $levelSelect = 1; Canvas.setContent(playMissionGui);";
          helpTag = "0";
          text = "play";
          groupNum = "-1";
