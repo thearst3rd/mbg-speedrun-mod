@@ -391,12 +391,13 @@ function newPreferences()
 function newCommands()
 {
    echo("\nNewly introduced commands and descriptions:");
-   echo("" SPC "playLastRec();         Plays most recently saved rec");
-   echo("" SPC "setTimeScale();        Changes the speed during demos");
-   echo("" SPC "timeskip();            Skips ahead the value in ms");
-   echo("" SPC "setTickInterval();     Sets max FPS to 1000 / value"); 
-   echo("" SPC "setRestartKeybind();   Changes restart keybind to value");
-   echo("" SPC "setRespawnKeybind();   Changes respawn keybind to value\n");
+   echo("" SPC "playLastRec();          Plays most recently saved rec");
+   echo("" SPC "setTimeScale();         Changes the speed during demos");
+   echo("" SPC "timeskip();             Skips ahead the value in ms");
+   echo("" SPC "setTickInterval();      Sets max FPS to 1000 / value"); 
+   echo("" SPC "printSpeedrunVersion(); Outputs mod version into console"); 
+   echo("" SPC "setRestartKeybind();    Changes restart keybind to value");
+   echo("" SPC "setRespawnKeybind();    Changes respawn keybind to value\n");
 }
 
 function helpfulCommands() 
