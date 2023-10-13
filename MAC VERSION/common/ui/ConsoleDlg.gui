@@ -1,0 +1,99 @@
+//--- OBJECT WRITE BEGIN ---
+new GuiControl(ConsoleDlg) {
+   profile = "GuiDefaultProfile";
+
+   new GuiWindowCtrl(consoleWindow)
+   {
+      profile = "GuiWindowProfile";
+      position = "0 0";
+      extent = "430 720";
+      text = "Console";
+
+      new GuiScrollCtrl(consoleText)
+      {
+         profile = "GuiScrollProfile";
+         position = "0 0";
+         extent = "430 700";
+         hScrollBar = "alwaysOn";
+         vScrollBar = "alwaysOn";
+         horizSizing = "width";
+         vertSizing = "height";
+
+         new GuiConsole("testArrayCtrl")
+         {
+            profile = "GuiConsoleProfile";
+            position = "0 0";
+         };
+      };
+
+      new GuiConsoleEditCtrl("ConsoleEntry")
+      {
+         profile = "GuiTextEditProfile";
+         position = "0 700";
+         extent = "1025 20";
+         historySize = 20;
+         altCommand = "ConsoleEntry::eval();";
+         horizSizing = "width";
+         vertSizing = "top";
+      };
+   };
+};
+//--- OBJECT WRITE END ---
+
+$ConsoleActive = false;
+
+function ConsoleEntry::eval()
+{
+	%text = ConsoleEntry.getValue();
+	if(%text $= "")
+		return;
+
+	echo("==> " @ %text);
+	eval(%text);
+   ConsoleEntry.setValue("");
+}
+
+function getResolutionHeight() {
+   %res = $pref::Video::resolution;
+   $resolutionHeight = getWords(%res, 1, 1);
+   return $resolutionHeight;
+}
+
+function consoleWindowPrintInfo() {
+   getResolutionHeight();
+   consoleWindow.extent = "1025 " @ ($resolutionHeight / 3);
+   consoleText.extent = "1025 " @ ($resolutionHeight / 3 - 20);
+   ConsoleEntry.position = "0 " @ ($resolutionHeight / 3 - 20);
+}
+
+function consoleWindowDefault() {
+   getResolutionHeight();
+   consoleWindow.extent = "430 " @ $resolutionHeight;
+   consoleText.extent = "430 " @ ($resolutionHeight - 20);
+   ConsoleEntry.position = "0 " @ ($resolutionHeight - 20);
+}
+
+function ToggleConsole(%make)
+{
+   consoleWindowDefault();
+
+   if (%make)
+   {
+      if ($ConsoleActive)
+      {
+         if ( $enableDirectInput && $platform !$= "macos")
+            activateKeyboard();
+         Canvas.popDialog(ConsoleDlg);
+         $ConsoleActive = false;
+      }
+      else
+      {
+         if ( $enableDirectInput && $platform !$= "macos")
+            deactivateKeyboard();
+         Canvas.pushDialog(ConsoleDlg, 99);
+         $ConsoleActive = true;
+      }
+   }
+}
+
+GlobalActionMap.bind(keyboard, tilde, toggleConsole);
