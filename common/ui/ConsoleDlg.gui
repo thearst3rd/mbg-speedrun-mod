@@ -6,14 +6,14 @@ new GuiControl(ConsoleDlg) {
    {
       profile = "GuiWindowProfile";
       position = "0 0";
-      extent = "430 720";
+      extent = "440 720";
       text = "Console";
 
       new GuiScrollCtrl(consoleText)
       {
          profile = "GuiScrollProfile";
          position = "0 0";
-         extent = "430 700";
+         extent = "440 700";
          hScrollBar = "alwaysOn";
          vScrollBar = "alwaysOn";
          horizSizing = "width";
@@ -68,8 +68,8 @@ function consoleWindowPrintInfo() {
 
 function consoleWindowDefault() {
    getResolutionHeight();
-   consoleWindow.extent = "430 " @ $resolutionHeight;
-   consoleText.extent = "430 " @ ($resolutionHeight - 20);
+   consoleWindow.extent = "440 " @ $resolutionHeight;
+   consoleText.extent = "440 " @ ($resolutionHeight - 20);
    ConsoleEntry.position = "0 " @ ($resolutionHeight - 20);
 }
 

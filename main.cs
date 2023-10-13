@@ -350,7 +350,7 @@ function hotKeys()
    echo("" SPC "Control + 1 = Toggles FPS");
    echo("" SPC "Control + 2 = Toggles extended timer");
    echo("" SPC "Control + 3 = Round robin time travel display options");
-   echo("" SPC "Control + 4 = Round robin intput display options");
+   echo("" SPC "Control + 4 = Round robin input display options");
    echo("" SPC "Control + 5 = Toggles third decimal for high scores");
    echo("" SPC "Control + 6 = Toggles particles");
    echo("" SPC "Control + 7 = Toggles Frame Rate Unlocker");
@@ -367,8 +367,8 @@ function hotKeys()
    echo("" SPC "NumPad9 = Toggles marble statistics in console");
    echo("" SPC "R = Restart by fully reloading the mission*");
    echo("" SPC "Shift + R = Resets the mission at the start (desyncs)**\n");
-   echo("" SPC "*Can be changed with setRestartKeybind(VALUE);");
-   echo("" SPC "**Can be changed with setRespawnKeybind(VALUE);\n");
+   echo("" SPC "*Can be changed with setRestartKeybind('VALUE');");
+   echo("" SPC "**Can be changed with setRespawnKeybind('VALUE');\n");
 }
 
 function newPreferences()
@@ -383,8 +383,8 @@ function newPreferences()
    echo("" SPC "$pref::enableFrameRateUnlock = 1;   0 or 1");
    echo("" SPC "$pref::setVerticalSync = 0;         0 or 1");
    echo("" SPC "$pref::Player::defaultFov = 90;     Value in degrees");
-   echo("" SPC "$pref::restartKeybind = R;          setRestartKeybind();");
-   echo("" SPC "$pref::respawnKeybind = Shift + R;  setRespawnKeybind();\n");
+   echo("" SPC "$pref::restartKeybind = R;          setRestartKeybind('');");
+   echo("" SPC "$pref::respawnKeybind = Shift + R;  setRespawnKeybind('');\n");
    echo("" SPC "*Default recommended as particles crash replay button\n");
 }
 
@@ -396,8 +396,8 @@ function newCommands()
    echo("" SPC "timeskip();             Skips ahead the value in ms");
    echo("" SPC "setTickInterval();      Sets max FPS to 1000 / value"); 
    echo("" SPC "printSpeedrunVersion(); Outputs mod version into console"); 
-   echo("" SPC "setRestartKeybind();    Changes restart keybind to value");
-   echo("" SPC "setRespawnKeybind();    Changes respawn keybind to value\n");
+   echo("" SPC "setRestartKeybind('');  Changes restart keybind to value");
+   echo("" SPC "setRespawnKeybind('');  Changes respawn keybind to value\n");
 }
 
 function helpfulCommands() 
@@ -420,7 +420,7 @@ function demoRecording()
    echo("gameplay and more confidence in the integrity of recs.");
    echo("\nDemo files will be recording in the background");
    echo("continuously without the need for a command. Each");
-   echo("attempt will create a new file to avoid the possiblity");
+   echo("attempt will create a new file to avoid the possibility");
    echo("of personal bests being overwritten.");
    echo("" SPC "- Restarts or canceling a load will delete the current");
    echo("  " SPC "unfinished recording.");
