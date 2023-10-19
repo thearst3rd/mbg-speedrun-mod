@@ -413,31 +413,37 @@ function inputDisplay() {
    // $moveY (for forward/backward keys)
    // $moveTrigger0, $moveTrigger1, $moveTrigger2
 
-   %w = 0;
-   %s = 0;
+   %w = %a = %s = %d = 0;
+   %wasd = "";
    if ($moveY != 0) {
       if ($moveY > 0) {
          %w = 1;
+         %wasd = "[W";
       } else {
          %s = 1;
+         %wasd = "[S";
       }
+   } else {
+      %wasd = "[ ";
    }
-   w_unpressed.setVisible(!%w);
-   w_pressed.setVisible(%w);
-   s_unpressed.setVisible(!%s);
-   s_pressed.setVisible(%s);
-
-   %a = 0;
-   %d = 0;
    if ($moveX != 0) {
       if ($moveX > 0) {
          %d = 1;
+         %wasd = %wasd @ " D]";
       } else {
          %a = 1;
+         %wasd = %wasd @ " A]";
       }
+   } else {
+      %wasd = %wasd @ "  ]";
    }
+
+   w_unpressed.setVisible(!%w);
+   w_pressed.setVisible(%w);
    a_unpressed.setVisible(!%a);
    a_pressed.setVisible(%a);
+   s_unpressed.setVisible(!%s);
+   s_pressed.setVisible(%s);
    d_unpressed.setVisible(!%d);
    d_pressed.setVisible(%d);
 
@@ -445,4 +451,37 @@ function inputDisplay() {
    jump_pressed.setVisible($moveTrigger2);
    item_unpressed.setVisible(!$moveTrigger0);
    item_pressed.setVisible($moveTrigger0);
+
+
+   if ($Game::State $= "Ready") {
+      $startAnalysis = "\n";
+      $changeMoveTime = 0;
+      $wasd = "";
+   } else if ($Game::State $= "Go") {
+      if ($changedMoveTime == 0) {
+         $changedMoveTime = PlayGui.elapsedTime;
+      } else if (%wasd !$= $wasd) {
+         %addLine = createAddLine();
+         $startAnalysis = $startAnalysis @ %addLine;
+         $changedMoveTime = PlayGui.elapsedTime;
+      }
+      $wasd = %wasd;
+   } else if ($Game::State $= "Play") {
+      if ($startAnalysis !$= "") {
+         %addLine = createAddLine(%wasd);
+         $startAnalysis = $startAnalysis @ %addLine;
+         echo($startAnalysis);
+         $startAnalysis = "";
+      }
+   }
+}
+
+function createAddLine() {
+   %start = mFloatLength($changedMoveTime / 1000, 3);
+   %end = mFloatLength(PlayGui.elapsedtime / 1000, 3);
+   %delta = PlayGui.elapsedtime - $changedMoveTime;
+   if (%delta > 0) {
+      %addLine = "\c1" @ $wasd @ "  " @ %start @ " - " @ %end @ " (" @ %delta @ " ms)\n";
+   }
+   return %addLine;
 }
