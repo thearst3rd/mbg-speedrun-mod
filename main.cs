@@ -397,7 +397,8 @@ function newCommands()
    echo("" SPC "setTickInterval();      Sets max FPS to 1000 / value"); 
    echo("" SPC "printSpeedrunVersion(); Outputs mod version into console"); 
    echo("" SPC "setRestartKeybind('');  Changes restart keybind to value");
-   echo("" SPC "setRespawnKeybind('');  Changes respawn keybind to value\n");
+   echo("" SPC "setRespawnKeybind('');  Changes respawn keybind to value");
+   echo("" SPC "$blackGems = 1;         Forces black gems until reboot\n");
 }
 
 function helpfulCommands() 

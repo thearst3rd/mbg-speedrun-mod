@@ -38,11 +38,15 @@ $GemSkinColors[9] = "black";
 
 function Gem::onAdd(%this,%obj)
 {
-   if (%this.skin !$= "")
-      %obj.setSkinName(%this.skin);
-   else {
-      // Random skin if none assigned
+   if ($blackGems) {
+      %obj.setSkinName($GemSkinColors[9]);
+   } else {
+      if (%this.skin !$= "")
+         %obj.setSkinName(%this.skin);
+      else {
+         // Random skin if none assigned
       %obj.setSkinName($GemSkinColors[getRandom(9)]);
+      }
    }
 }
 
