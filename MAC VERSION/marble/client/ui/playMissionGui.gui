@@ -660,3 +660,42 @@ function getMissionObject( %missionFile )
 	%missionInfoObject.file = %missionFile;
    %file.delete();
 }
+
+
+function verify(%recOwner, %scale) {
+	setTimeScale(%scale);
+   $recOwner = %recOwner;
+   $verifyOutput = "\n" @ "*********************** BATCH OUTPUT ***********************" @ "\n";
+	buildVerifyList();
+   verifyNext();
+}
+
+function verifyNext() {
+   $verifyNext = schedule(1000, 0, "verifyNext");
+   if ($Game::State $= "End" && !$scoreDocumented) {
+      %output = "Gold/" @ MissionInfo.type  @ "/" @ MissionInfo.name  @ "/" @ $recOwner @ "/" @ playgui.elapsedTime @ "/" @ playgui.totalbonus @ "/" @ playgui.gemcount @ "/0/0/0/0";
+      $verifyOutput = $verifyOutput @ %output @ "\n";
+      $scoreDocumented = true;
+   }
+   if (!$playingDemo) {
+      playDemo($VerifyFile[$NextVerifyFile]);
+      $NextVerifyFile++;
+      $scoreDocumented = false;
+   }
+   if ($NextVerifyFile > $NumVerifyFiles) {
+      cancel($verifyNext);
+      echo($verifyOutput);
+      setTimeScale(1);
+   }
+}
+
+function buildVerifyList()
+{
+   $NumVerifyFiles = 0;
+   $NextVerifyFile = 0;
+   for(%file = findFirstFile("marble/client/demos/verify/*.rec"); %file !$= ""; %file = findNextFile("marble/client/demos/verify/*.rec"))
+   {
+      $VerifyFile[$NumVerifyFiles] = %file;
+      $NumVerifyFiles++;
+   }
+}
