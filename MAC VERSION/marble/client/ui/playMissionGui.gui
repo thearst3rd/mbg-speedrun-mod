@@ -673,7 +673,10 @@ function verify(%recOwner, %scale) {
 function verifyNext() {
    $verifyNext = schedule(1000, 0, "verifyNext");
    if ($Game::State $= "End" && !$scoreDocumented) {
-      %output = "Gold/" @ MissionInfo.type  @ "/" @ MissionInfo.name  @ "/" @ $recOwner @ "/" @ playgui.elapsedTime @ "/" @ playgui.totalbonus @ "/" @ playgui.gemcount @ "/0/0/0/0";
+      %missionName = MissionInfo.name;
+      if (%missionName $= "Will o' Wisp")
+         %missionName = "Will o' the Wisp";
+      %output = "Gold/" @ MissionInfo.type  @ "/" @ %missionName  @ "/" @ $recOwner @ "/" @ playgui.elapsedTime @ "/" @ playgui.totalbonus @ "/" @ playgui.gemcount @ "/0/0/0/0";
       $verifyOutput = $verifyOutput @ %output @ "\n";
       $scoreDocumented = true;
    }
