@@ -440,7 +440,7 @@ function buildMissionList()
 
       for(%file = findFirstFile($Server::MissionFileSpec);
             %file !$= ""; %file = findNextFile($Server::MissionFileSpec))
-      {
+      { 
          if (strStr(%file, "CVS/") == -1 && strStr(%file, "common/") == -1)
             getMissionObject(%file);
       }
@@ -481,7 +481,7 @@ function buildMissionList()
    }
 
    PM_setSelected(%selected);
-}
+} 
 
 function PM_skipQualify()
 {
@@ -558,21 +558,21 @@ function saveCurrentSelect() {
 function PM_setSelected( %row )
 {
    %playEnabled = (PM_missionList.rowCount() > 0) && ($testCheats || ($MissionType $= "") || (%row < $pref::QualifiedLevel[$MissionType]));
-
+   
    PM_play.setActive(%playEnabled);
    PM_NoQualOverlay.setVisible(!%playEnabled);
    PM_NoQualText.setText(%playEnabled ? "" : "<color:CCCCCC><font:DomCasualD:32><just:center>Not Qualified!");
-
+   
    PM_missionList.setSelectedRow(%row);
    %id = PM_missionList.getSelectedId();
    %mission = getField(PM_missionList.getRowTextById(%id), 1);
-
+   
    // set the preview info
    %levelText = "<font:DomCasualD:24><just:center>" @ upperFirst(%mission.type) @ " Level " @ (%mission.level+0);
    PM_level_fgnd.setText("<color:FFFFFF>" @ %levelText);
    PM_level_bkgnd.setText("<color:000000>" @ %levelText);
-   %descText = "<spush><font:DomCasualD:24>" @ %mission.name @
-               "<spop><lmargin:10>\n\n" @
+   %descText = "<spush><font:DomCasualD:24>" @ %mission.name @ 
+               "<spop><lmargin:10>\n\n" @ 
                %mission.desc;
    if(%mission.time)
       %descText = %descText @ "<spush><font:DomCasualD:24><lmargin:0>\nTime to Qualify: " @ formatTime(%mission.time) @ "<spop>";
@@ -587,7 +587,7 @@ function PM_setSelected( %row )
    }
 
    PM_description.setValue( %descText );
-
+   
    PM_preview.setBitmap(filePath(%mission.file) @ "/" @fileBase(%mission.file));
 
    %next = %row+1;
@@ -606,33 +606,33 @@ function PM_setSelected( %row )
 
 
 //----------------------------------------
-function getMissionObject( %missionFile )
+function getMissionObject( %missionFile ) 
 {
    %file = new FileObject();
-
+   
    %missionInfoObject = "";
-
+   
    if ( %file.openForRead( %missionFile ) ) {
 		%inInfoBlock = false;
-
+		
 		while ( !%file.isEOF() ) {
 			%line = %file.readLine();
 			%line = trim( %line );
-
+			
 			if( %line $= "new ScriptObject(MissionInfo) {" ) {
 				%line = "new ScriptObject() {";
 				%inInfoBlock = true;
 			}
 			else if( %inInfoBlock && %line $= "};" ) {
 				%inInfoBlock = false;
-				%missionInfoObject = %missionInfoObject @ %line;
+				%missionInfoObject = %missionInfoObject @ %line; 
 				break;
 			}
-
+			
 			if( %inInfoBlock )
-			   %missionInfoObject = %missionInfoObject @ %line @ " ";
+			   %missionInfoObject = %missionInfoObject @ %line @ " "; 	
 		}
-
+		
 		%file.close();
 	}
 	%missionInfoObject = "%missionInfoObject = " @ %missionInfoObject;
@@ -676,7 +676,7 @@ function verifyNext() {
       %missionName = MissionInfo.name;
       if (%missionName $= "Will o' Wisp")
          %missionName = "Will o' the Wisp";
-      %output = "Gold/" @ MissionInfo.type  @ "/" @ %missionName  @ "/" @ $recOwner @ "/" @ playgui.elapsedTime @ "/" @ playgui.totalbonus @ "/" @ playgui.gemcount @ "/0/0/0/0";
+      %output = "Gold/" @ MissionInfo.type  @ "/" @ MissionInfo.name  @ "/" @ $recOwner @ "/" @ playgui.elapsedTime @ "/" @ playgui.totalbonus @ "/" @ playgui.gemcount @ "/0/0/0/0";
       $verifyOutput = $verifyOutput @ %output @ "\n";
       $scoreDocumented = true;
    }

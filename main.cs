@@ -353,8 +353,6 @@ function hotKeys()
    echo("" SPC "Control + 4 = Round robin input display options");
    echo("" SPC "Control + 5 = Toggles third decimal for high scores");
    echo("" SPC "Control + 6 = Toggles particles");
-   echo("" SPC "Control + 7 = Toggles Frame Rate Unlocker");
-   echo("" SPC "Control + 8 = Toggles vertical sync");
    echo("" SPC "NumPad0 = Time skip, can be set with $pref::timeskip");
    echo("" SPC "NumPad1 = 5% speed");
    echo("" SPC "NumPad2 = 25% speed");
@@ -380,8 +378,6 @@ function newPreferences()
    echo("" SPC "$pref::timeTravelDisplay = 1;       0, 1 or 2");
    echo("" SPC "$pref::inputDisplay = 1;            0, 1 or 2");
    echo("" SPC "$pref::timeskip = 5000;             Value in ms");
-   echo("" SPC "$pref::enableFrameRateUnlock = 1;   0 or 1");
-   echo("" SPC "$pref::setVerticalSync = 0;         0 or 1");
    echo("" SPC "$pref::Player::defaultFov = 90;     Value in degrees");
    echo("" SPC "$pref::restartKeybind = R;          setRestartKeybind('');");
    echo("" SPC "$pref::respawnKeybind = Shift + R;  setRespawnKeybind('');\n");
@@ -392,13 +388,15 @@ function newCommands()
 {
    echo("\nNewly introduced commands and descriptions:");
    echo("" SPC "playLastRec();          Plays most recently saved rec");
+   echo("" SPC "setMaxFPS();            Limits FPS to value*");
+   echo("" SPC "setTickInterval();      Sets frame duration to integer"); 
    echo("" SPC "setTimeScale();         Changes the speed during demos");
    echo("" SPC "timeskip();             Skips ahead the value in ms");
-   echo("" SPC "setTickInterval();      Sets max FPS to 1000 / value"); 
    echo("" SPC "printSpeedrunVersion(); Outputs mod version into console"); 
    echo("" SPC "setRestartKeybind('');  Changes restart keybind to value");
    echo("" SPC "setRespawnKeybind('');  Changes respawn keybind to value");
    echo("" SPC "$blackGems = 1;         Forces black gems until reboot\n");
+   echo("" SPC "*setMaxFPS(0) resets to unlocked FPS\n");
 }
 
 function helpfulCommands() 
@@ -516,30 +514,12 @@ function setRespawnKeybind(%this)
    moveMap.bind(keyboard, $pref::respawnKeybind, respawnKeybind);
 }
 
-function toggleFrameRateLocker() {
-   $pref::enableFrameRateUnlock = !$pref::enableFrameRateUnlock;
-   $pref::setVerticalSync = 0;
-   setTickInterval(1);
-   setVerticalSync($pref::setVerticalSync);
-   enableFrameRateUnlock($pref::enableFrameRateUnlock);
-}
-
-function toggleVerticalSync() {
-   $pref::setVerticalSync = !$pref::setVerticalSync;
-   $pref::enableFrameRateUnlock = 1;
-   setTickInterval(1);
-   enableFrameRateUnlock($pref::enableFrameRateUnlock);
-   setVerticalSync($pref::setVerticalSync);
-}
-
 GlobalActionMap.bindCmd(keyboard, "ctrl 1", "toggleFPS();", "");
 GlobalActionMap.bindCmd(keyboard, "ctrl 2", "toggleExtendedTimer();", "");
 GlobalActionMap.bindCmd(keyboard, "ctrl 3", "toggletimeTravelDisplay();", "");
 GlobalActionMap.bindCmd(keyboard, "ctrl 4", "toggleInputDisplay();", "");
 GlobalActionMap.bindCmd(keyboard, "ctrl 5", "toggleShowThousandths(); refreshThousandths();", "");
 GlobalActionMap.bindCmd(keyboard, "ctrl 6", "toggleShowParticles(); schedule(10,0,restartKeybind);", "");
-GlobalActionMap.bindCmd(keyboard, "ctrl 7", "toggleFrameRateLocker();", "");
-GlobalActionMap.bindCmd(keyboard, "ctrl 8", "toggleVerticalSync();", "");
 
 GlobalActionMap.bindCmd(keyboard, NumPad0, "timeskip($pref::timeskip);", "");
 GlobalActionMap.bindCmd(keyboard, NumPad1, "setTimeScale(0.05);", "");
