@@ -85,5 +85,5 @@ $pref::showParticles = 0;
 $pref::timeTravelDisplay = 1;
 $pref::inputDisplay = 1;
 $pref::timeskip = 5000;
-$pref::restartKeybind = r;
-$pref::respawnKeybind = shift r;
+$pref::restartKeybind = "r";
+$pref::respawnKeybind = "shift r";
