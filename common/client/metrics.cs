@@ -8,6 +8,17 @@
 // load gui used to display various metric outputs
 exec("~/ui/FrameOverlayGui.gui");
 
+function betterfpsMetricsCallback()
+{
+   if ($fps::modded >= 1000){
+      %truncate = mFloatLength($fps::modded , 0);
+   } else if ($fps::modded >= 100) {
+      %truncate = mFloatLength($fps::modded , 1);
+   } else {
+      %truncate = mFloatLength($fps::modded , 2);
+   }
+   return " FPS: " @ %truncate;
+}
 
 function fpsMetricsCallback()
 {
@@ -128,11 +139,16 @@ package Metrics
 function onFrameAdvance(%time)
 {
    Parent::onFrameAdvance(%time);
+   if(TextOverlayFPSControl.callback !$= "")
+   {
+      eval("$frameVal = " @ TextOverlayFPSControl.callback @ ";");
+      TextOverlayFPSControl.setText($frameVal);
+   }
    if(TextOverlayControl.callback !$= "")
    {
       eval("$frameVal = " @ TextOverlayControl.callback @ ";");
       TextOverlayControl.setText($frameVal);
-   }
+   } 
 }
 
 };
@@ -175,5 +191,18 @@ function metrics(%expr)
    {
       //GLEnableMetrics(false);
       Canvas.popDialog(FrameOverlayGui);
+   }
+}
+
+function betterFPS(%expr) {
+   if (%expr)
+   {
+      Canvas.pushDialog(FrameOverlayFPSGui, 1000);
+      TextOverlayFPSControl.callback = "betterfpsMetricsCallback()";
+   }
+   else
+   {
+      //GLEnableMetrics(false);
+      Canvas.popDialog(FrameOverlayFPSGui);
    }
 }

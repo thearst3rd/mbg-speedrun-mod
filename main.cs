@@ -372,11 +372,12 @@ function hotKeys()
 function newPreferences()
 {
    echo("\nNewly introduced preferences, defaults and options:");
+   echo("" SPC "$pref::showFPS = 0;                 0 or 1");
    echo("" SPC "$pref::extendedTimer = 1;           0 or 1");
-   echo("" SPC "$pref::showThousandths = 1;         0 or 1");
-   echo("" SPC "$pref::showParticles = 0;           0 or 1*");
    echo("" SPC "$pref::timeTravelDisplay = 1;       0, 1 or 2");
    echo("" SPC "$pref::inputDisplay = 1;            0, 1 or 2");
+   echo("" SPC "$pref::showThousandths = 1;         0 or 1");
+   echo("" SPC "$pref::showParticles = 0;           0 or 1*");
    echo("" SPC "$pref::timeskip = 5000;             Value in ms");
    echo("" SPC "$pref::Player::defaultFov = 90;     Value in degrees");
    echo("" SPC "$pref::restartKeybind = R;          setRestartKeybind('');");
@@ -434,13 +435,8 @@ function demoRecording()
 }
 
 function toggleFPS() {
-   if($fpsEnabled) {
-      $fpsEnabled = false;
-      return metrics();
-   } else {
-      $fpsEnabled = true;
-      return metrics(fps);
-   }
+   $pref::showFPS = !$pref::showFPS;
+   return betterFPS($pref::showFPS);
 }
 
 function toggleExtendedTimer() {

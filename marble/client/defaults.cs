@@ -76,7 +76,7 @@ $pref::Audio::channelVolume8 = 0.8;
 
 $pref::LastReadMOTD = "Welcome to MarbleBlast!";
 $pref::CurrentMOTD = "Welcome to MarbleBlast!";
-
+ 
 $Pref::Unix::OpenALFrequency = 44100;
 
 $pref::extendedTimer = 1;
@@ -85,5 +85,6 @@ $pref::showParticles = 0;
 $pref::timeTravelDisplay = 1;
 $pref::inputDisplay = 1;
 $pref::timeskip = 5000;
+$pref::showFPS = 0;
 $pref::restartKeybind = "r";
 $pref::respawnKeybind = "shift r";

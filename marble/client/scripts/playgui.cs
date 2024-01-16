@@ -13,6 +13,7 @@
 function PlayGui::onWake(%this)
 {
    $getMissionName = MissionInfo.name;
+   betterFPS($pref::showFPS);
 
    // Actually set FOV...
    setFov($pref::Player::defaultFov);
@@ -174,6 +175,8 @@ function onFrameAdvance(%timeDelta)
       $particles = 0;
    }
    
+
+
    %marbleExists = isObject(ServerConnection) && isObject(ServerConnection.getControlObject()) && ServerConnection.getControlObject();
    if (%marbleExists) {
       inputDisplay();

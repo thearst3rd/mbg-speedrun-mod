@@ -377,6 +377,8 @@ new GuiChunkedBitmapCtrl(playMissionGui) {
 //----------------------------------------
 function playMissionGui::onWake()
 {
+   betterFPS($pref::showFPS);
+
    if($MissionType $= "") {
       $MissionType = "Beginner";
    }
