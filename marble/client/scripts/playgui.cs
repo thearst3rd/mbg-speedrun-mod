@@ -169,36 +169,11 @@ function onFrameAdvance(%timeDelta)
       PlayGui.updateTimer(%timeDelta);
    }
 
-   if ($pref::showParticles) {
-      $particles = 1;
-   } else {
-      $particles = 0;
-   }
-   
-
-
-   %marbleExists = isObject(ServerConnection) && isObject(ServerConnection.getControlObject()) && ServerConnection.getControlObject();
-   if (%marbleExists) {
-      inputDisplay();
-
-      if (!$playingDemo) {
-         setTimeScale(1);
-      }
-   }
-
    TimerHundredths.setVisible(!$pref::extendedTimer);
    TimerThousandths.setVisible($pref::extendedTimer);
-   if ($pref::inputDisplay > 0) {
-      if ($playingDemo) {
-         InputDisplay.setVisible(1);
-      } else if (!$playDemo && $pref::inputDisplay == 2) {
-         InputDisplay.setVisible(1);
-      } else {
-         InputDisplay.setVisible(0);
-      }
-   } else {
-      InputDisplay.setVisible(0);
-   }
+   $particles = $pref::showParticles;
+   inputDisplay();
+   startAnalysis();
 }
 
 function PlayGui::stopTimer(%this)
@@ -411,11 +386,19 @@ function refreshCenterTextCtrl()
 }
 
 function inputDisplay() {
+   if ($pref::inputDisplay == 1 || $pref::inputDisplay == 2) {
+      if (!$playingDemo && $pref::inputDisplay == 1) {
+         InputDisplay.setVisible(0);
+      } else {
+         getInputs();
+         InputDisplay.setVisible(1);
+      }
+   } else {
+      InputDisplay.setVisible(0);
+   }
+}
 
-   // $moveX (for left/right keys)
-   // $moveY (for forward/backward keys)
-   // $moveTrigger0, $moveTrigger1, $moveTrigger2
-
+function getInputs() {
    %w = %a = %s = %d = 0;
    %wasd = "";
    if ($moveY != 0) {
@@ -454,8 +437,9 @@ function inputDisplay() {
    jump_pressed.setVisible($moveTrigger2);
    item_unpressed.setVisible(!$moveTrigger0);
    item_pressed.setVisible($moveTrigger0);
+}
 
-
+function startAnalysis() {
    if ($Game::State $= "Ready") {
       $startAnalysis = "\n";
       $changeMoveTime = 0;

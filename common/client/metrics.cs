@@ -10,13 +10,8 @@ exec("~/ui/FrameOverlayGui.gui");
 
 function betterfpsMetricsCallback()
 {
-   if ($fps::modded >= 1000){
-      %truncate = mFloatLength($fps::modded , 0);
-   } else if ($fps::modded >= 100) {
-      %truncate = mFloatLength($fps::modded , 1);
-   } else {
-      %truncate = mFloatLength($fps::modded , 2);
-   }
+   %decimals = 4 - strlen(mFloor($fps::modded));
+   %truncate = mFloatLength($fps::modded , %decimals);
    return " FPS: " @ %truncate;
 }
 

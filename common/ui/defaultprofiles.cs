@@ -238,6 +238,11 @@ if(!isObject(EditorTextProfileWhite)) new GuiControlProfile (EditorTextProfileWh
    autoSizeHeight = true;
 };
 
+if(!isObject(GuiFPSTextProfile)) new GuiControlProfile (GuiFPSTextProfile : GuiTextProfile)
+{
+   fontSize = 16;
+};
+
 if(!isObject(GuiMediumTextProfile)) new GuiControlProfile (GuiMediumTextProfile : GuiTextProfile)
 {
    fontSize = 24;

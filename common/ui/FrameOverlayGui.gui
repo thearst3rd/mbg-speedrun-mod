@@ -10,7 +10,7 @@ new GuiControl(FrameOverlayGui) {
 	setFirstResponder = "True";
 	modal = "false";
 	helpTag = "0";
-   noCursor = true;
+	noCursor = true;
 
 	new GuiTextCtrl(TextOverlayControl) {
 		profile = "GuiTextProfile";
@@ -32,16 +32,16 @@ new GuiControl(FrameOverlayFPSGui) {
 	horizSizing = "right";
 	vertSizing = "bottom";
 	position = "0 0";
-	extent = "60 20";
+	extent = "75 22";
 	minExtent = "8 8";
 	visible = "True";
 	setFirstResponder = "True";
 	modal = "false";
 	helpTag = "0";
-   noCursor = true;
+	noCursor = true;
 
 	new GuiTextCtrl(TextOverlayFPSControl) {
-		profile = "GuiTextProfile";
+		profile = "GuiFPSTextProfile";
 		horizSizing = "left";
 		vertSizing = "top";
 		position = "0 0";
