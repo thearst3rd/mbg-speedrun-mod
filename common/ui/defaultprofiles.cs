@@ -240,8 +240,8 @@ if(!isObject(EditorTextProfileWhite)) new GuiControlProfile (EditorTextProfileWh
 
 if(!isObject(GuiFPSTextProfile)) new GuiControlProfile (GuiFPSTextProfile : GuiTextProfile)
 {
-   fontSize = 26;
-   fontType = "Dom Casual";
+   fontSize = 24;
+   fontType = "DomCasualD";
    fontColor = "255 255 255";
 };
 

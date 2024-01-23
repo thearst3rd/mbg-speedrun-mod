@@ -44,7 +44,7 @@ new GuiControl(FrameOverlayFPSGui) {
 		profile = "GuiFPSTextProfile";
 		horizSizing = "left";
 		vertSizing = "top";
-		position = "-26 -11";
+		position = "-27 -10";
 		extent = "120 120";
 		minExtent = "8 8";
 		visible = "True";
@@ -64,7 +64,7 @@ new GuiControl(FrameOverlayFPSGui) {
 			profile = "GuiFPSTextProfile";
 			horizSizing = "left";
 			vertSizing = "top";
-			position = "7 0";
+			position = "8 2";
 			extent = "20 20";
 			minExtent = "8 8";
 			visible = "True";
