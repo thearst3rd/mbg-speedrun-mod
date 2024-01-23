@@ -667,11 +667,11 @@ function verify(%recOwner, %scale) {
    $recOwner = %recOwner;
    $verifyOutput = "\n" @ "*********************** BATCH OUTPUT ***********************" @ "\n";
 	buildVerifyList();
-   verifyNext();
+   verifyNext(%scale);
 }
 
-function verifyNext() {
-   $verifyNext = schedule(1000, 0, "verifyNext");
+function verifyNext(%scale) {
+   $verifyNext = schedule(1000, 0, "verifyNext", %scale);
    if ($Game::State $= "End" && !$scoreDocumented) {
       %missionName = MissionInfo.name;
       if (%missionName $= "Will o' Wisp")
@@ -684,6 +684,7 @@ function verifyNext() {
       playDemo($VerifyFile[$NextVerifyFile]);
       $NextVerifyFile++;
       $scoreDocumented = false;
+      setTimeScale(%scale);
    }
    if ($NextVerifyFile > $NumVerifyFiles) {
       cancel($verifyNext);

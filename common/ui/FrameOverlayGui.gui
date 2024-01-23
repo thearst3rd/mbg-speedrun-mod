@@ -40,18 +40,39 @@ new GuiControl(FrameOverlayFPSGui) {
 	helpTag = "0";
 	noCursor = true;
 
-	new GuiTextCtrl(TextOverlayFPSControl) {
+	new GuiControl(TextOverlayFPSControlContainer) {
 		profile = "GuiFPSTextProfile";
 		horizSizing = "left";
 		vertSizing = "top";
-		position = "0 0";
-		extent = "15 18";
+		position = "-26 -11";
+		extent = "120 120";
 		minExtent = "8 8";
 		visible = "True";
-		setFirstResponder = "True";
-		modal = "True";
-		helpTag = "0";
-		expression = "10";
+
+		new GuiBitmapCtrl(w_unpressed) {
+			profile = "GuiFPSTextProfile";
+			horizSizing = "left";
+			vertSizing = "top";
+			position = "0 0";
+			extent = "120 50";
+			minExtent = "8 8";
+			bitmap = "./fpsOverlay.png";
+			wrap = "0";
+		};
+
+		new GuiTextCtrl(TextOverlayFPSControl) {
+			profile = "GuiFPSTextProfile";
+			horizSizing = "left";
+			vertSizing = "top";
+			position = "7 0";
+			extent = "20 20";
+			minExtent = "8 8";
+			visible = "True";
+			setFirstResponder = "True";
+			modal = "True";
+			helpTag = "0";
+			expression = "10";
+		};
 	};
 };
 //--- OBJECT WRITE END ---

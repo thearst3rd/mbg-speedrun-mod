@@ -394,10 +394,12 @@ function newCommands()
    echo("" SPC "setTimeScale();         Changes the speed during demos");
    echo("" SPC "timeskip();             Skips ahead the value in ms");
    echo("" SPC "printSpeedrunVersion(); Outputs mod version into console"); 
+   echo("" SPC "realtimeOverride(true); Forces sync to rec frames**");
    echo("" SPC "setRestartKeybind('');  Changes restart keybind to value");
    echo("" SPC "setRespawnKeybind('');  Changes respawn keybind to value");
    echo("" SPC "$blackGems = 1;         Forces black gems until reboot\n");
-   echo("" SPC "*setMaxFPS(0) resets to unlocked FPS\n");
+   echo("" SPC "*setMaxFPS(0) resets to unlocked FPS");
+   echo("" SPC "**Rec will not necessarily play back in real time\n");
 }
 
 function helpfulCommands() 
