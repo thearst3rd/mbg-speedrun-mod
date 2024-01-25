@@ -390,7 +390,6 @@ function inputDisplay() {
       if (!$playingDemo && $pref::inputDisplay == 1) {
          InputDisplay.setVisible(0);
       } else {
-         getInputs();
          InputDisplay.setVisible(1);
       }
    } else {
@@ -437,9 +436,12 @@ function getInputs() {
    jump_pressed.setVisible($moveTrigger2);
    item_unpressed.setVisible(!$moveTrigger0);
    item_pressed.setVisible($moveTrigger0);
+
+   return %wasd;
 }
 
 function startAnalysis() {
+   %wasd = getInputs();
    if ($Game::State $= "Ready") {
       $startAnalysis = "\n";
       $changeMoveTime = 0;
