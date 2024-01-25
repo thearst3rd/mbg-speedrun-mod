@@ -172,8 +172,9 @@ function onFrameAdvance(%timeDelta)
    TimerHundredths.setVisible(!$pref::extendedTimer);
    TimerThousandths.setVisible($pref::extendedTimer);
    $particles = $pref::showParticles;
+   %wasd = getInputs();
    inputDisplay();
-   startAnalysis();
+   startAnalysis(%wasd);
 }
 
 function PlayGui::stopTimer(%this)
@@ -440,8 +441,7 @@ function getInputs() {
    return %wasd;
 }
 
-function startAnalysis() {
-   %wasd = getInputs();
+function startAnalysis(%wasd) {
    if ($Game::State $= "Ready") {
       $startAnalysis = "\n";
       $changeMoveTime = 0;
