@@ -662,44 +662,34 @@ function getMissionObject( %missionFile )
 }
 
 
-function verify(%recOwner, %scale) {
+function bulkRecord(%scale, %override) {
 	setTimeScale(%scale);
-   $recOwner = %recOwner;
-   $verifyOutput = "\n" @ "*********************** BATCH OUTPUT ***********************" @ "\n";
-	buildVerifyList();
-   verifyNext(%scale);
+   realtimeOverride(%override);
+	buildRecordingList(%firstRec);
+   recordNext(%scale);
 }
 
-function verifyNext(%scale) {
-   $verifyNext = schedule(1000, 0, "verifyNext", %scale);
-   if ($Game::State $= "End" && !$scoreDocumented) {
-      %missionName = MissionInfo.name;
-      if (%missionName $= "Will o' Wisp")
-         %missionName = "Will o' the Wisp";
-      %output = "Gold/" @ MissionInfo.type  @ "/" @ MissionInfo.name  @ "/" @ $recOwner @ "/" @ playgui.elapsedTime @ "/" @ playgui.totalbonus @ "/" @ playgui.gemcount @ "/0/0/0/0";
-      $verifyOutput = $verifyOutput @ %output @ "\n";
-      $scoreDocumented = true;
-   }
+function recordNext(%scale) {
+   $recordNext = schedule(100, 0, "recordNext", %scale);
    if (!$playingDemo) {
-      playDemo($VerifyFile[$NextVerifyFile]);
-      $NextVerifyFile++;
-      $scoreDocumented = false;
+      playDemo($recordFile[$recordNextFile]);
+      $recordNextFile++;
       setTimeScale(%scale);
    }
-   if ($NextVerifyFile > $NumVerifyFiles) {
-      cancel($verifyNext);
-      echo($verifyOutput);
+   if ($recordNextFile > $numRecordFiles) {
+      cancel($recordNext);
       setTimeScale(1);
+      realtimeOverride(0);
    }
 }
 
-function buildVerifyList()
+function buildRecordingList()
 {
-   $NumVerifyFiles = 0;
-   $NextVerifyFile = 0;
-   for(%file = findFirstFile("marble/client/demos/verify/*.rec"); %file !$= ""; %file = findNextFile("marble/client/demos/verify/*.rec"))
+   $numRecordFiles = 1;
+   $recordNextFile = 0;
+   for(%file = findFirstFile("marble/client/demos/record/" @ $numRecordFiles @ "*.rec"); %file !$= ""; %file = findFirstFile("marble/client/demos/record/" @ $numRecordFiles @ "*.rec"))
    {
-      $VerifyFile[$NumVerifyFiles] = %file;
-      $NumVerifyFiles++;
+      $recordFile[$numRecordFiles] = %file;
+      $numRecordFiles++;
    }
 }

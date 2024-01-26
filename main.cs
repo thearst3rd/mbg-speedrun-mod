@@ -341,7 +341,8 @@ function help()
    echo("" SPC "newPreferences();");
    echo("" SPC "newCommands();"); 
    echo("" SPC "helpfulCommands();");
-   echo("" SPC "demoRecording();\n"); 
+   echo("" SPC "demoRecording();"); 
+   echo("" SPC "aboutBulkRecord();\n"); 
 }
 
 function hotKeys()
@@ -365,8 +366,8 @@ function hotKeys()
    echo("" SPC "NumPad9 = Toggles marble statistics in console");
    echo("" SPC "R = Restart by fully reloading the mission*");
    echo("" SPC "Shift + R = Resets the mission at the start (desyncs)**\n");
-   echo("" SPC "*Can be changed with setRestartKeybind('VALUE');");
-   echo("" SPC "**Can be changed with setRespawnKeybind('VALUE');\n");
+   echo("" SPC " * Can be changed with setRestartKeybind('VALUE');");
+   echo("" SPC "** Can be changed with setRespawnKeybind('VALUE');\n");
 }
 
 function newPreferences()
@@ -395,11 +396,13 @@ function newCommands()
    echo("" SPC "timeskip();             Skips ahead the value in ms");
    echo("" SPC "printSpeedrunVersion(); Outputs mod version into console"); 
    echo("" SPC "realtimeOverride(true); Forces sync to rec frames**");
+   echo("" SPC "bulkRecord(spd, sync);  Plays recs consecutively***");
    echo("" SPC "setRestartKeybind('');  Changes restart keybind to value");
    echo("" SPC "setRespawnKeybind('');  Changes respawn keybind to value");
    echo("" SPC "$blackGems = 1;         Forces black gems until reboot\n");
-   echo("" SPC "*setMaxFPS(0) resets to unlocked FPS");
-   echo("" SPC "**Rec will not necessarily play back in real time\n");
+   echo("" SPC "  * setMaxFPS(0) resets to unlocked FPS");
+   echo("" SPC " ** Rec will not necessarily play back in real time");
+   echo("" SPC "*** Please use aboutBulkRecord(); for directions\n");
 }
 
 function helpfulCommands() 
@@ -434,6 +437,27 @@ function demoRecording()
    echo("" SPC "- If the player exits a level, the player will be");
    echo("  " SPC "prompted if they would like to keep the attempt as a");
    echo("  " SPC "blooper or to delete the recording.\n");
+}
+
+function aboutBulkRecord() 
+{
+   echo("\nBulk record was built for individuals to be able to easily");
+   echo("record videos for editing purposes. The recs will");
+   echo("continuously play through a folder until all recordings in ");
+   echo("that folder have completed.\n");
+   echo("1. First, make a \"record\" folder in your demos folder.");
+   echo("   Place the recs you wish to record in that folder.");
+   echo("2. Name each file starting with 1_, 2_, 3_, etc. in the");
+   echo("   order you wish to play them back.");
+   echo("3. Enter the command bulkRecord(speed, forceSync); where");
+   echo("   speed is the time scale you wish to use (needs leading");
+   echo("   0 for decimals i.e./ 0.5) and forceSync is either true ");
+   echo("   or false. Note that forceSync is really");
+   echo("   realtimeOverride(true); which will result in recs");
+   echo("   playing slower than real time for individuals with");
+   echo("   slower computers, so use at your own risk.");
+   echo("4. Sit back, record and relax while you let the script do");
+   echo("   its thing!\n");
 }
 
 function toggleFPS() {
