@@ -396,7 +396,8 @@ function newCommands()
    echo("" SPC "timeskip();             Skips ahead the value in ms");
    echo("" SPC "printSpeedrunVersion(); Outputs mod version into console"); 
    echo("" SPC "realtimeOverride(true); Forces sync to rec frames**");
-   echo("" SPC "bulkRecord(spd, sync);  Plays recs consecutively***");
+   echo("" SPC "bulkRecord();           Plays recs consecutively***");
+   echo("" SPC "stopBulkRecord();       Stops bulk record script");
    echo("" SPC "setRestartKeybind('');  Changes restart keybind to value");
    echo("" SPC "setRespawnKeybind('');  Changes respawn keybind to value");
    echo("" SPC "$blackGems = 1;         Forces black gems until reboot\n");
@@ -447,17 +448,20 @@ function aboutBulkRecord()
    echo("that folder have completed.\n");
    echo("1. First, make a \"record\" folder in your demos folder.");
    echo("   Place the recs you wish to record in that folder.");
-   echo("2. Name each file starting with 1_, 2_, 3_, etc. in the");
-   echo("   order you wish to play them back.");
-   echo("3. Enter the command bulkRecord(speed, forceSync); where");
-   echo("   speed is the time scale you wish to use (needs leading");
-   echo("   0 for decimals i.e./ 0.5) and forceSync is either true ");
-   echo("   or false. Note that forceSync is really");
-   echo("   realtimeOverride(true); which will result in recs");
-   echo("   playing slower than real time for individuals with");
-   echo("   slower computers, so use at your own risk.");
+   echo("2. Name each file starting with 1, 2, 3, etc. in the order");
+   echo("   you wish to play them back. On Windows, a quick way to");
+   echo("   do this is to select the file, then press F2 followed by");
+   echo("   left arrow and enter the number.");
+   echo("3. Enter the command bulkRecord(timescale, fireworks);");
+   echo("   where timescale is the speed you wish to use (needs ");
+   echo("   leading 0 for decimals i.e./ 0.5) and fireworks is the");
+   echo("   duration (in ms) after completion you want before a new");
+   echo("   rec begins. For example, bulkRecord(1, 3000); would");
+   echo("   play at normal speed and conclude the demo 3 seconds");
+   echo("   after the the run has completed.");
    echo("4. Sit back, record and relax while you let the script do");
-   echo("   its thing!\n");
+   echo("   its thing! If at any point you need to stop the script,");
+   echo("   stopBulkRecord(); will end the process.\n");
 }
 
 function toggleFPS() {

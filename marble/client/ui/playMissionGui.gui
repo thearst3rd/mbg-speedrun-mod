@@ -662,34 +662,58 @@ function getMissionObject( %missionFile )
 }
 
 
-function bulkRecord(%scale, %override) {
-	setTimeScale(%scale);
-   realtimeOverride(%override);
-	buildRecordingList(%firstRec);
-   recordNext(%scale);
+function bulkRecord(%timescale, %fireworks) {
+	buildRecordingList();
+   bulkRecordSchedule(%timescale, %fireworks);
 }
 
-function recordNext(%scale) {
-   $recordNext = schedule(100, 0, "recordNext", %scale);
+function bulkRecordSchedule(%timescale, %fireworks) {
+   $bulkRecordSchedule = schedule(100, 0, "bulkRecordSchedule", %timescale, %fireworks);
    if (!$playingDemo) {
-      playDemo($recordFile[$recordNextFile]);
-      $recordNextFile++;
-      setTimeScale(%scale);
+      playDemo($recordFile[$recordingListIndex]);
+      $recordingListIndex++;
+      setTimeScale(%timescale);
+   } 
+   if ($recordingListIndex > $numRecordFiles) {
+      clearBulkRecord();
    }
-   if ($recordNextFile > $numRecordFiles) {
-      cancel($recordNext);
-      setTimeScale(1);
-      realtimeOverride(0);
+   if ($Game::State $= "End") {
+      cancel($bulkRecordSchedule);
+      $recordNext = schedule(%fireworks, 0, "recordNext", %timescale, %fireworks);
+   }
+}
+
+function recordNext(%timescale, %fireworks) {
+   if ($recordingListIndex < $numRecordFiles) {
+      onDemoPlayDone(true);
+      playDemo($recordFile[$recordingListIndex]);
+      $recordingListIndex++;
+      setTimeScale(%timescale);
+      $bulkRecordSchedule = schedule(1000, 0, "bulkRecordSchedule", %timescale, %fireworks);
+   } else {
+      clearBulkRecord();
    }
 }
 
 function buildRecordingList()
 {
-   $numRecordFiles = 1;
-   $recordNextFile = 0;
-   for(%file = findFirstFile("marble/client/demos/record/" @ $numRecordFiles @ "*.rec"); %file !$= ""; %file = findFirstFile("marble/client/demos/record/" @ $numRecordFiles @ "*.rec"))
+   $numRecordFiles = 0;
+   $recordingListIndex = 0;
+   for(%file = findFirstFile("marble/client/demos/record/" @ ($numRecordFiles + 1) @ "*.rec"); %file !$= ""; %file = findFirstFile("marble/client/demos/record/" @ ($numRecordFiles + 1) @ "*.rec"))
    {
       $recordFile[$numRecordFiles] = %file;
       $numRecordFiles++;
    }
+}
+
+function clearBulkRecord() {
+   cancel($Game::StateSchedule);
+   cancel($bulkRecordSchedule);
+   cancel($recordNext);
+   $bulkRecordSchedule = $recordNext = $Game::State = 0; 
+}
+
+function stopBulkRecord() {
+   onDemoPlayDone(true);
+   clearBulkRecord();
 }
