@@ -380,7 +380,6 @@ function newPreferences()
    echo("" SPC "$pref::showThousandths = 1;         0 or 1");
    echo("" SPC "$pref::showParticles = 0;           0 or 1*");
    echo("" SPC "$pref::timeskip = 5000;             Value in ms");
-   echo("" SPC "$pref::Player::defaultFov = 90;     Value in degrees");
    echo("" SPC "$pref::restartKeybind = R;          setRestartKeybind('');");
    echo("" SPC "$pref::respawnKeybind = Shift + R;  setRespawnKeybind('');\n");
    echo("" SPC "*Default recommended as particles crash replay button\n");
@@ -394,13 +393,15 @@ function newCommands()
    echo("" SPC "setTickInterval();      Sets frame duration to integer"); 
    echo("" SPC "setTimeScale();         Changes the speed during demos");
    echo("" SPC "timeskip();             Skips ahead the value in ms");
+   echo("" SPC "setTimeskip();          Sets timeskip pref in ms"); 
+   echo("" SPC "fov();                  Sets field of view, saves as pref");
    echo("" SPC "printSpeedrunVersion(); Outputs mod version into console"); 
    echo("" SPC "realtimeOverride(true); Forces sync to rec frames**");
    echo("" SPC "bulkRecord();           Plays recs consecutively***");
    echo("" SPC "stopBulkRecord();       Stops bulk record script");
    echo("" SPC "setRestartKeybind('');  Changes restart keybind to value");
    echo("" SPC "setRespawnKeybind('');  Changes respawn keybind to value");
-   echo("" SPC "$blackGems = 1;         Forces black gems until reboot\n");
+   echo("" SPC "toggleBlackGems();      Turns on/off all gems being black\n");
    echo("" SPC "  * setMaxFPS(0) resets to unlocked FPS");
    echo("" SPC " ** Rec will not necessarily play back in real time");
    echo("" SPC "*** Please use aboutBulkRecord(); for directions\n");

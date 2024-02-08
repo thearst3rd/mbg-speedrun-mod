@@ -72,6 +72,13 @@ function Gem::restoreState(%this,%obj,%state)
    %obj.hide(%state.object[%obj.getId()]);
 }
 
+function toggleBlackGems() {
+   $blackGems = !$blackGems;
+   if ($missionRunning) {
+      restartLevel();
+   }
+}
+
 //-----------------------------------------------------------------------------
 
 datablock ItemData(GemItem)

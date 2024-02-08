@@ -474,3 +474,23 @@ function createAddLine() {
    }
    return %addLine;
 }
+
+function fov(%fov) {
+   if (%fov < 5) {
+      %fov = 5;
+   } else if (%fov > 120) {
+      %fov = 120;
+   }
+   setFov(%fov);
+   $pref::player::defaultFov = %fov;
+
+   if (%fov == mFloor(%fov)) {
+      %fov = mFloatLength(%fov, 1);
+   }
+   echo("FOV set to " @ %fov);
+}
+
+function setTimeskip (%ms) {
+   $pref::timeskip = %ms;
+   echo("Timeskip set to " @ %ms "ms");
+}
