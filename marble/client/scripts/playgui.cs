@@ -492,5 +492,5 @@ function fov(%fov) {
 
 function setTimeskip (%ms) {
    $pref::timeskip = %ms;
-   echo("Timeskip set to " @ %ms "ms");
+   echo("Timeskip set to " @ %ms @ "ms");
 }
