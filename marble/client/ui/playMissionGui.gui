@@ -548,6 +548,13 @@ function onDemoPlayDone(%forced)
    } else {
       setPlayMissionGui();
    }
+
+   if (%forced && $fireworksTimer)
+      clearFireworksTimer();
+   if (%forced && $bulkRecordSchedule)
+      clearBulkRecord();
+   if (%forced && $verifySchedule)
+      clearVerify();
 }
 
 function saveCurrentSelect() {
@@ -659,4 +666,124 @@ function getMissionObject( %missionFile )
    %grp.add(%missionInfoObject);
 	%missionInfoObject.file = %missionFile;
    %file.delete();
+}
+
+
+// VIDEO RECORDING -----------------------------------------------------------------------------
+
+// SINGLE VIDEO ---------------------------
+function videoRecordDemo(%path, %timescale, %fireworks) {
+   if (%timescale > 1) {
+      echo("\c2Timescale cannot exceed 1 for this function.");
+      return;
+   }
+   playdemo(%path);
+   setTimeScale(%timescale);
+   fireworksTimer(%fireworks);
+}
+
+function fireworksTimer(%fireworks) {
+   clearFireworksTimer();
+   %marbleExists = isObject(ServerConnection) && isObject(ServerConnection.getControlObject()) && ServerConnection.getControlObject();
+   if ($Game::State $= "End" && %marbleExists) {
+      $fireworksTimer = schedule(%fireworks, 0, "forceEndDemo");
+      return;
+   }
+   if ($playingDemo)
+      $fireworksTimer = schedule(10, 0, "fireworksTimer", %fireworks);
+}
+
+function forceEndDemo() {
+   endFireworks();
+   setTimescale(1);
+   $fireworksTimer = schedule(50, 0, "onDemoPlayDone", 1);
+
+   if (!$levelSelect) {
+      Canvas.setContent(MainMenuGui);
+   } else {
+      setPlayMissionGui();
+   }
+}
+
+function clearFireworksTimer() {
+   cancel($fireworksTimer);
+   deleteVariables("$fireworksTimer");
+}
+
+
+// BULK VIDEOS ---------------------------
+function bulkRecord(%timescale, %fireworks) {
+   deleteVariables("$recordFile*");
+	buildRecordingList();
+   bulkRecordSchedule(%timescale, %fireworks);
+}
+
+function bulkRecordSchedule(%timescale, %fireworks) {
+   if ($recordingListIndex == $numRecordFiles) {
+      clearBulkRecord();
+      return;
+   }
+   if (!$playingDemo) {
+      startBulkRecording(%timescale, %fireworks);  
+      return;
+   }
+
+   %marbleExists = isObject(ServerConnection) && isObject(ServerConnection.getControlObject()) && ServerConnection.getControlObject();
+   if ($Game::State $= "End" && %marbleExists && $recordingListIndex < $numRecordFiles) {
+      $bulkRecordSchedule  = schedule(%fireworks, 0, "startBulkRecording", %timescale, %fireworks);
+      return;
+   }
+   $bulkRecordSchedule = schedule(10, 0, "bulkRecordSchedule", %timescale, %fireworks);
+}
+
+function startBulkRecording(%timescale, %fireworks) {
+   if ($playingDemo) {}
+         onDemoPlayDone();
+   playDemo($recordFile[$recordingListIndex]);
+   $recordingListIndex++;
+   setTimeScale(%timescale);
+   $bulkRecordSchedule = schedule(10, 0, "bulkRecordSchedule", %timescale, %fireworks);
+}
+
+function buildRecordingList()
+{
+   $numRecordFiles = 0;
+   $recordingListIndex = 0;
+   %path = "marble/client/demos/record/" @ ($numRecordFiles + 1);
+   for(%file = findFirstFile(%path @ ".rec"); %file !$= ""; %file = findFirstFile(%path @ ".rec"))
+   {
+      $recordFile[$numRecordFiles] = %file;
+      $numRecordFiles++;
+      %path = "marble/client/demos/record/" @ ($numRecordFiles + 1);
+   }
+}
+
+function clearBulkRecord() {
+   cancel($bulkRecordSchedule);
+   deleteVariables("$bulkRecordSchedule");
+}
+
+function aboutBulkRecord() 
+{
+   echo("\nBulk record was built to assist in recording multiple recs");
+   echo("for compilations. The recs will continuously play through");
+   echo("a prepared folder until all recordings in that folder have");
+   echo("completed, regardless of recs desyncing.\n");
+   echo("1. First, make a \"record\" folder in your demos folder.");
+   echo("   Place the recs you wish to record in that folder.");
+   echo("2. Name each file numerically without any additional");
+   echo("   characters (i.e., 1.rec, 2.rec, etc.) in the order you");
+   echo("   wish to play them back. On Windows, a quick way to do");
+   echo("   this is to select the file, then press F2 and type in");
+   echo("   your number.");
+   echo("3. Enter the command bulkRecord(timescale, fireworks);");
+   echo("   where timescale is the speed you wish to use (needs");
+   echo("   leading 0 for decimals, i.e., 0.5) and fireworks is the");
+   echo("   duration (in ms) after completion you want before a new");
+   echo("   rec begins. For example, bulkRecord(1, 3000); would");
+   echo("   play at normal speed and conclude the demo 3 seconds");
+   echo("   after the the run has completed.");
+   echo("4. Sit back, record and relax while you let the script do");
+   echo("   its thing! If at any point you need to stop the script,");
+   echo("   escape will end the process.\n");
 }
