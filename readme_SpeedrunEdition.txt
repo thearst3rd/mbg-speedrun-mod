@@ -1,4 +1,4 @@
-LAST UPDATED: March 24, 2024
+LAST UPDATED: April 3, 2024
 
 =============================================================================================================================
 INSTALLATION
@@ -273,6 +273,8 @@ NEW ADDITIONS
 CHANGES
 - bulkRecord() naming convention changed and aboutBulkRecord() updated to reflect these changes
 - bulkRecord() process can now be ended using the "escape" key; stopBulkRecord() has been removed
+- bulkRecord() defaults to reverse alphabetical order unless files named numerically to order
+- Console font size platform specific and made larger for Mac users
 
 
 V2.01

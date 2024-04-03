@@ -54,7 +54,16 @@ function ConsoleEntry::eval()
 }
 
 function getResolutionHeight() {
-   %res = $pref::Video::resolution;
+   if ($platform $= "macos") {
+      if ($pref::Video::fullScreen == 1) {
+         %res = $pref::Video::resolution;
+      }
+      else {
+         %res = $pref::Video::windowedRes;
+      }
+   } else {
+      %res = $pref::Video::resolution;
+   }
    $resolutionHeight = getWords(%res, 1, 1);
    return $resolutionHeight;
 }

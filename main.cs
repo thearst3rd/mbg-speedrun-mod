@@ -341,7 +341,7 @@ function help()
    echo("" SPC "newPreferences();");
    echo("" SPC "newCommands();"); 
    echo("" SPC "helpfulCommands();");
-   echo("" SPC "demoRecording();"); 
+   echo("" SPC "demoRecording();\n"); 
 }
 
 function hotKeys()

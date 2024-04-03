@@ -750,11 +750,21 @@ function buildRecordingList()
    $numRecordFiles = 0;
    $recordingListIndex = 0;
    %path = "marble/client/demos/record/" @ ($numRecordFiles + 1);
-   for(%file = findFirstFile(%path @ ".rec"); %file !$= ""; %file = findFirstFile(%path @ ".rec"))
-   {
-      $recordFile[$numRecordFiles] = %file;
-      $numRecordFiles++;
-      %path = "marble/client/demos/record/" @ ($numRecordFiles + 1);
+   %numbered = getfilesize("marble/client/demos/record/1.rec") > 0;
+
+   if (%numbered) {
+      for(%file = findFirstFile(%path @ ".rec"); %file !$= ""; %file = findFirstFile(%path @ ".rec"))
+      {
+         $recordFile[$numRecordFiles] = %file;
+         $numRecordFiles++;
+         %path = "marble/client/demos/record/" @ ($numRecordFiles + 1);
+      }
+   } else {
+      for(%file = findFirstFile("marble/client/demos/record/*.rec"); %file !$= ""; %file = findNextFile("marble/client/demos/record/*.rec"))
+      {
+         $recordFile[$numRecordFiles] = %file;
+         $numRecordFiles++;
+      }
    }
 }
 
@@ -771,11 +781,13 @@ function aboutBulkRecord()
    echo("completed, regardless of recs desyncing.\n");
    echo("1. First, make a \"record\" folder in your demos folder.");
    echo("   Place the recs you wish to record in that folder.");
-   echo("2. Name each file numerically without any additional");
-   echo("   characters (i.e., 1.rec, 2.rec, etc.) in the order you");
-   echo("   wish to play them back. On Windows, a quick way to do");
-   echo("   this is to select the file, then press F2 and type in");
-   echo("   your number.");
+   echo("2. By default, the script will play back the recs in");
+   echo("   reverse alphabetical order. To play back in a preferred");
+   echo("   order, first name each file numerically without any");
+   echo("   additional characters (i.e., 1.rec, 2.rec, etc.) in the");
+   echo("   order you wish to play them back. On Windows, a quick");
+   echo("   way to do this is to select the file, then press F2 and");
+   echo("   type in your number.");
    echo("3. Enter the command bulkRecord(timescale, fireworks);");
    echo("   where timescale is the speed you wish to use (needs");
    echo("   leading 0 for decimals, i.e., 0.5) and fireworks is the");

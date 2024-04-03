@@ -417,7 +417,7 @@ if(!isObject(GuiMLTextEditProfile)) new GuiControlProfile (GuiMLTextEditProfile)
 if(!isObject(GuiConsoleProfile)) new GuiControlProfile ("GuiConsoleProfile")
 {
    fontType = ($platform $= "macos") ? "Courier New" : "Lucida Console";
-   fontSize = 12;
+   fontSize = ($platform $= "macos") ? 14 : 12;
    fontColor = "0 0 0";
    fontColorHL = "130 130 130";
    fontColorNA = "255 0 0";
