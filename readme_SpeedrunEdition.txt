@@ -1,4 +1,4 @@
-LAST UPDATED: April 3, 2024
+LAST UPDATED: April 4, 2024
 
 =============================================================================================================================
 INSTALLATION
@@ -267,14 +267,16 @@ and when to jump. Feel free to copy and paste from the first { to the bottom } i
 CHANGE LOG
 =============================================================================================================================
 V2.02
-NEW ADDITIONS
+NEW ADDITIONS/CHANGES
 - videoRecordDemo() created to assist with single rec video recording
-
-CHANGES
-- bulkRecord() naming convention changed and aboutBulkRecord() updated to reflect these changes
-- bulkRecord() process can now be ended using the "escape" key; stopBulkRecord() has been removed
-- bulkRecord() defaults to reverse alphabetical order unless files named numerically to order
 - Console font size platform specific and made larger for Mac users
+
+BUG FIXES
+- Console window width no longer fixed to default if adjusted
+- "Level 0" no longer displayed entering level select if demo is played before clicking play for the first time
+
+REMOVALS
+- bulkRecord() removed due to fireworks particles causing crashes and requiring engine side fixes
 
 
 V2.01
@@ -289,7 +291,7 @@ NEW ADDITIONS
 - toggleBlackGems() added to more intuitively modify the global variable
 
 CHANGES
-- realtimeOverride(); changed to forceRecDelta(); to more accurately describe the function
+- realtimeOverride() changed to forceRecDelta(); to more accurately describe the function
 
 BUG FIXES
 - Fixed bug where fps overlay was not updating if timescaling during demo playback, accuracy varies on degree of scaling
@@ -306,7 +308,7 @@ NEW ADDITIONS
 - realtimeOverride(true); created to help limit FPS desyncs
 	- Forces engine to fully calculate each frame of a rec
 	- Results in recs not playing back in real time
-- bulkRecord(); and stopBulkRecord() added to assist compilation creators
+- bulkRecord() and stopBulkRecord() added to assist compilation creators
 
 REMOVALS
 - Hotkeys and preferences related to locking FPS removed

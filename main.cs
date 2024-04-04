@@ -324,7 +324,7 @@ function togglePrintInfo() {
    if (%marbleExists && $ConsoleActive) {
       if ($printInfo == true) {
          $printInfo = false;
-         consoleWindowDefault();
+         resetConsoleWindow();
          echo("");
       } else {
          $printInfo = true;
@@ -396,7 +396,6 @@ function newCommands()
    echo("" SPC "fov();                  Sets field of view, saves as pref");
    echo("" SPC "printSpeedrunVersion(); Outputs mod version into console"); 
    echo("" SPC "videoRecordDemo();      Assists recording a single rec**"); 
-   echo("" SPC "bulkRecord();           aboutBulkRecord(); for more info");
    echo("" SPC "forceRecDeltas(true);   Syncs using rec frame durations***");
    echo("" SPC "forceRecPhysics(true);  Syncs using physics stored in rec");
    echo("" SPC "setRestartKeybind('');  Changes restart keybind to value");

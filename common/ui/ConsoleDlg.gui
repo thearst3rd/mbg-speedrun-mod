@@ -64,27 +64,38 @@ function getResolutionHeight() {
    } else {
       %res = $pref::Video::resolution;
    }
+   $resolutionWidth = firstWord(%res);
    $resolutionHeight = getWords(%res, 1, 1);
-   return $resolutionHeight;
 }
 
 function consoleWindowPrintInfo() {
    getResolutionHeight();
+   $consoleWindowWidth = firstWord(consoleWindow.extent);
    consoleWindow.extent = "1025 " @ ($resolutionHeight / 3);
    consoleText.extent = "1025 " @ ($resolutionHeight / 3 - 20);
    ConsoleEntry.position = "0 " @ ($resolutionHeight / 3 - 20);
 }
 
-function consoleWindowDefault() {
+function resetConsoleWindow() {
    getResolutionHeight();
-   consoleWindow.extent = "440 " @ $resolutionHeight;
-   consoleText.extent = "440 " @ ($resolutionHeight - 20);
+   consoleWindow.extent = $consoleWindowWidth SPC $resolutionHeight;
+   consoleText.extent = $consoleWindowWidth SPC ($resolutionHeight - 20);
    ConsoleEntry.position = "0 " @ ($resolutionHeight - 20);
+}
+
+function setDynamicConsoleWindowHeight() {
+   getResolutionHeight();
+   if (!$printInfo) {
+      $consoleWindowWidth = firstWord(consoleWindow.extent);
+      if ($consoleWindowWidth > $resolutionWidth)
+         $consoleWindowWidth = $resolutionWidth;
+      resetConsoleWindow();
+   }
 }
 
 function ToggleConsole(%make)
 {
-   consoleWindowDefault();
+   setDynamicConsoleWindowHeight();
 
    if (%make)
    {

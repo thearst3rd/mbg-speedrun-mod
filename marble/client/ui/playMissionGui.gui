@@ -558,7 +558,8 @@ function onDemoPlayDone(%forced)
 }
 
 function saveCurrentSelect() {
-   $savedLevelSelect = PM_missionList.getSelectedId();
+   if ($MissionType !$= "")
+      $savedLevelSelect = PM_missionList.getSelectedId();
 }
 
 //----------------------------------------
@@ -686,22 +687,29 @@ function fireworksTimer(%fireworks) {
    clearFireworksTimer();
    %marbleExists = isObject(ServerConnection) && isObject(ServerConnection.getControlObject()) && ServerConnection.getControlObject();
    if ($Game::State $= "End" && %marbleExists) {
-      $fireworksTimer = schedule(%fireworks, 0, "forceEndDemo");
+      %currentTime = getRealTime();
+      $fireworksTimer = schedule(%fireworks, 0, "forceEndDemo", %currentTime, %fireworks);
       return;
    }
    if ($playingDemo)
       $fireworksTimer = schedule(10, 0, "fireworksTimer", %fireworks);
 }
 
-function forceEndDemo() {
+function forceEndDemo(%lastTime, %fireworks) {
    endFireworks();
    setTimescale(1);
-   $fireworksTimer = schedule(50, 0, "onDemoPlayDone", 1);
 
-   if (!$levelSelect) {
-      Canvas.setContent(MainMenuGui);
+   %scale = (getRealTime() - %lastTime) / %fireworks;
+   if (%scale < 0.99) {
+      $fireworksTimer = schedule(50, 0, "onDemoPlayDone", 1);
+
+      if (!$levelSelect) {
+         Canvas.setContent(MainMenuGui);
+      } else {
+         setPlayMissionGui();
+      }
    } else {
-      setPlayMissionGui();
+      onDemoPlayDone(true);
    }
 }
 
@@ -712,11 +720,11 @@ function clearFireworksTimer() {
 
 
 // BULK VIDEOS ---------------------------
-function bulkRecord(%timescale, %fireworks) {
-   deleteVariables("$recordFile*");
-	buildRecordingList();
-   bulkRecordSchedule(%timescale, %fireworks);
-}
+//function bulkRecord(%timescale, %fireworks) {
+//   deleteVariables("$recordFile*");
+//   buildRecordingList();
+//   bulkRecordSchedule(%timescale, %fireworks);
+//}
 
 function bulkRecordSchedule(%timescale, %fireworks) {
    if ($recordingListIndex == $numRecordFiles) {
@@ -737,8 +745,8 @@ function bulkRecordSchedule(%timescale, %fireworks) {
 }
 
 function startBulkRecording(%timescale, %fireworks) {
-   if ($playingDemo) {}
-         onDemoPlayDone();
+   if ($playingDemo)
+      onDemoPlayDone();
    playDemo($recordFile[$recordingListIndex]);
    $recordingListIndex++;
    setTimeScale(%timescale);
@@ -773,29 +781,29 @@ function clearBulkRecord() {
    deleteVariables("$bulkRecordSchedule");
 }
 
-function aboutBulkRecord() 
-{
-   echo("\nBulk record was built to assist in recording multiple recs");
-   echo("for compilations. The recs will continuously play through");
-   echo("a prepared folder until all recordings in that folder have");
-   echo("completed, regardless of recs desyncing.\n");
-   echo("1. First, make a \"record\" folder in your demos folder.");
-   echo("   Place the recs you wish to record in that folder.");
-   echo("2. By default, the script will play back the recs in");
-   echo("   reverse alphabetical order. To play back in a preferred");
-   echo("   order, first name each file numerically without any");
-   echo("   additional characters (i.e., 1.rec, 2.rec, etc.) in the");
-   echo("   order you wish to play them back. On Windows, a quick");
-   echo("   way to do this is to select the file, then press F2 and");
-   echo("   type in your number.");
-   echo("3. Enter the command bulkRecord(timescale, fireworks);");
-   echo("   where timescale is the speed you wish to use (needs");
-   echo("   leading 0 for decimals, i.e., 0.5) and fireworks is the");
-   echo("   duration (in ms) after completion you want before a new");
-   echo("   rec begins. For example, bulkRecord(1, 3000); would");
-   echo("   play at normal speed and conclude the demo 3 seconds");
-   echo("   after the the run has completed.");
-   echo("4. Sit back, record and relax while you let the script do");
-   echo("   its thing! If at any point you need to stop the script,");
-   echo("   escape will end the process.\n");
-}
+//function aboutBulkRecord() 
+//{
+//   echo("\nBulk record was built to assist in recording multiple recs");
+//   echo("for compilations. The recs will continuously play through");
+//   echo("a prepared folder until all recordings in that folder have");
+//   echo("completed, regardless of recs desyncing.\n");
+//   echo("1. First, make a \"record\" folder in your demos folder.");
+//   echo("   Place the recs you wish to record in that folder.");
+//   echo("2. By default, the script will play back the recs in");
+//   echo("   reverse alphabetical order. To play back in a preferred");
+//   echo("   order, first name each file numerically without any");
+//   echo("   additional characters (i.e., 1.rec, 2.rec, etc.) in the");
+//   echo("   order you wish to play them back. On Windows, a quick");
+//   echo("   way to do this is to select the file, then press F2 and");
+//   echo("   type in your number.");
+//   echo("3. Enter the command bulkRecord(timescale, fireworks);");
+//   echo("   where timescale is the speed you wish to use (needs");
+//   echo("   leading 0 for decimals, i.e., 0.5) and fireworks is the");
+//   echo("   duration (in ms) after completion you want before a new");
+//   echo("   rec begins. For example, bulkRecord(1, 3000); would");
+//   echo("   play at normal speed and conclude the demo 3 seconds");
+//   echo("   after the the run has completed.");
+//   echo("4. Sit back, record and relax while you let the script do");
+//   echo("   its thing! If at any point you need to stop the script,");
+//   echo("   escape will end the process.\n");
+//}
