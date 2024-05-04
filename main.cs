@@ -341,18 +341,18 @@ function help()
    echo("" SPC "newPreferences();");
    echo("" SPC "newCommands();"); 
    echo("" SPC "helpfulCommands();");
-   echo("" SPC "demoRecording();\n"); 
+   echo("" SPC "aboutNewRecs();\n"); 
 }
 
 function hotKeys()
 {
    echo("\nHotkeys:");
-   echo("" SPC "Control + 1 = Toggles FPS");
+   echo("" SPC "Control + 1 = Toggles FPS overlay");
    echo("" SPC "Control + 2 = Toggles extended timer");
    echo("" SPC "Control + 3 = Round robin time travel display options");
    echo("" SPC "Control + 4 = Round robin input display options");
    echo("" SPC "Control + 5 = Toggles third decimal for high scores");
-   echo("" SPC "Control + 6 = Toggles particles");
+   echo("" SPC "Control + 6 = Toggles particle visibility");
    echo("" SPC "NumPad0 = Time skip, can be set with $pref::timeskip");
    echo("" SPC "NumPad1 = 5% speed");
    echo("" SPC "NumPad2 = 25% speed");
@@ -362,7 +362,7 @@ function hotKeys()
    echo("" SPC "NumPad6 = Toggles $testcheats");
    echo("" SPC "NumPad7 = Sets resolution to 1920x1080");
    echo("" SPC "NumPad8 = Sets resolution to 1280x720");
-   echo("" SPC "NumPad9 = Toggles marble statistics in console");
+   echo("" SPC "NumPad9 = Toggles marble physics in console");
    echo("" SPC "R = Restart by fully reloading the mission*");
    echo("" SPC "Shift + R = Resets the mission at the start (desyncs)**\n");
    echo("" SPC " * Can be changed with setRestartKeybind('VALUE');");
@@ -416,20 +416,31 @@ function helpfulCommands()
    echo("" SPC "$pref::Environmentmaps = 1; (Reflections)\n");
 }
 
-function demoRecording()
+
+function aboutNewRecs()
 {
-   echo("\nDemo recording has been completely remodeled to better");
-   echo("fit the needs of speedrunners via fixing the user");
-   echo("interface, creating a non-destructive file management");
-   echo("alternative, resolving desyncs and eliminating the");
-   echo("need for $doRecordDemo. The end result is faster-paced");
-   echo("gameplay and more confidence in the integrity of recs.");
-   echo("\nDemo files will be recording in the background");
-   echo("continuously without the need for a command. Each");
-   echo("attempt will create a new file to avoid the possibility");
-   echo("of personal bests being overwritten.");
-   echo("" SPC "- Restarts or canceling a load will delete the current");
-   echo("  " SPC "unfinished recording.");
+   echo("\nThe greatest achievement through the collaborative effort");
+   echo("of many is the creation of a rec format that has");
+   echo("cross-platform support while maintaining backwards");
+   echo("compatibility. Recs recorded on v2.01 on Windows or v2.02");
+   echo("on Mac will be of this new format. Recs from these versions");
+   echo("will have a stamp at the beginning showing the version");
+   echo("number of Speedrun Edition to confirm.");
+   echo("\nIf the rec is a hybrid rec, then the forceRecPhysics(1);");
+   echo("command can be entered to force rec syncing via stored");
+   echo("physics. If the rec is not a hybrid rec, then");
+   echo("forceRecDeltas(1); can assist with rec sync, however, recs");
+   echo("must be played back using the same operating system and");
+   echo("aspect ratio of the recording and will not necessarily play");
+   echo("back in real time.");
+   echo("\nIn addition, demo file management has been completely");
+   echo("remodeled to better fit the needs of Marble Blast");
+   echo("speedrunners. Recs will automatically be recorded upon boot");
+   echo("eliminating the need for $doRecordDemo. Each attempt will");
+   echo("create a new file to avoid the possibility of personal");
+   echo("bests being overwritten. Restarts will automatically delete");
+   echo("unfinished runs to avoid clutter. For runs that the player");
+   echo("wants saved, there are the following options:");
    echo("" SPC "- Replay will save the recording with the level name");
    echo("  " SPC "and elapsed time in the _Trash folder, then reload");
    echo("  " SPC "the mission to immediately continue attempts.");
