@@ -243,6 +243,11 @@ and when to jump. Feel free to copy and paste from the first { to the bottom } i
 =============================================================================================================================
 CHANGE LOG
 =============================================================================================================================
+v2.03
+BUG FIXES
+- FPS display did not show correct fps during rec playback if playback device was less powerful than rec creator's device
+
+
 V2.02
 NEW ADDITIONS/CHANGES
 - Mac compatibility of new rec format
