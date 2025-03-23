@@ -1,4 +1,4 @@
-LAST UPDATED: May 3, 2024
+LAST UPDATED: March 22, 2025
 
 =============================================================================================================================
 INSTALLATION
@@ -41,6 +41,7 @@ There are various new tools that are available in this package. A mostly compreh
 - Vertically dynamic console window sizing
 - Max FPS function as an alternative to third party frame rate lockers
 - Hybrid cross-platform and backwards compatible rec format with improved file management
+- Convert functions to convert vanilla recs to hybrid rec format
 - Various hotkeys with restart and respawn player bindable by player preference
 
 A help() function was added to allow users to read about these changes in-game.
@@ -98,11 +99,14 @@ timeskip();			Skips ahead the value in milliseconds
 setTimeskip();          	Sets timeskip pref in ms
 fov();                  	Sets field of view and saves as a pref
 printSpeedrunVersion(); 	Outputs mod version into console
-videoRecordDemo();		Assists with recording single recs, function arguments are (path, scale, fireworksPeriod)
 forceRecDeltas(true);		Forces engine to sync to rec frame durations during demos, playback not in real time
 forceRecPhysics(true);		Corrects marble physics using physics stored in rec if marble desyncs
-setRestartKeybind('');		Changes restart keybind to value
-setRespawnKeybind('');		Changes respawn keybind to value
+convertDemo();          	(sourceRec, [force], [timescale]); 
+convertFolder();        	(sourceDir, [force], [timescale]);
+convertPath();        		(sourcePath, [force], [timescale]);
+convertAll();           	([force], [timescale]);
+setRestartKeybind('STRING');	Set restart keybind to string value
+setRespawnKeybind('STRING');	Set respawn keybind to stringvalue
 toggleBlackGems();      	Turns on/off all gems being black, resets on reboot
 
 
@@ -243,6 +247,27 @@ and when to jump. Feel free to copy and paste from the first { to the bottom } i
 =============================================================================================================================
 CHANGE LOG
 =============================================================================================================================
+v2.04
+NEW ADDITIONS/CHANGES
+- Provided support to convert vanilla recs into to the new format for archival purposes. Recordings are played in-game while 
+  recording in the new format. Files are stored in a new created directory "marble/client/demos/Converted". Features include:
+	- Four functions depending on desired scope:
+		- convertDemo(); for single files
+		- convertFolder(); for the entire contents of a single folder
+		- convertPath(); for the contents of a folder and its sub folders
+		- convertAll(); for all recs in the entire MBG directory tree
+	- Creation of a new "Converted" directory tree that bypasses resource manager.
+	- Statistical console output and a full report of the location of unfinished and skipped recordings in a text file. 
+	  Skipped recordings include previously converted files or recordings already of the new format.
+	- Clean-up processes that removes unfinished runs
+	- A force option to force a conversion regardless if a desync occurs or the rec was previously converted
+	- A timescale option to set the playback speed while converting - default is set to as fast as the engine will allow.
+  NOTE: Converted recordings will NOT be verifiable.
+
+REMOVALS
+- videoRecordDemo(); removed due to lack of interest and purpose
+
+
 v2.03
 BUG FIXES
 - FPS display did not show correct fps during rec playback if playback device was less powerful than rec creator's device

@@ -395,15 +395,17 @@ function newCommands()
    echo("" SPC "setTimeskip();          Sets timeskip pref in ms"); 
    echo("" SPC "fov();                  Sets field of view, saves as pref");
    echo("" SPC "printSpeedrunVersion(); Outputs mod version into console"); 
-   echo("" SPC "videoRecordDemo();      Assists recording a single rec**"); 
-   echo("" SPC "forceRecDeltas(true);   Syncs using rec frame durations***");
+   echo("" SPC "forceRecDeltas(true);   Syncs using rec frame durations**");
    echo("" SPC "forceRecPhysics(true);  Syncs using physics stored in rec");
-   echo("" SPC "setRestartKeybind('');  Changes restart keybind to value");
-   echo("" SPC "setRespawnKeybind('');  Changes respawn keybind to value");
+   echo("" SPC "convertDemo();          (sourceRec, [force], [timescale])");
+   echo("" SPC "convertFolder();        (sourceDir, [force], [timescale])");
+   echo("" SPC "convertPath();          (sourcePath, [force], [timescale])");
+   echo("" SPC "convertAll();           ([force], [timescale])");
+   echo("" SPC "setRestartKeybind(str); Set restart keybind to str value");
+   echo("" SPC "setRespawnKeybind(str); Set respawn keybind to str value");
    echo("" SPC "toggleBlackGems();      Turns on/off all gems being black\n");
-   echo("" SPC "  * setMaxFPS(0) sets FPS to unlocked");
-   echo("" SPC " ** videoRecordDemo(filePath, timescale, fireworksPeriod)");
-   echo("" SPC "*** Rec will not necessarily play back in real time\n");
+   echo("" SPC "*  setMaxFPS(0) sets FPS to unlocked");
+   echo("" SPC "** Rec will not necessarily play back in real time\n");
 }
 
 function helpfulCommands() 
@@ -415,7 +417,6 @@ function helpfulCommands()
    echo("" SPC "echo(PlayGui.totalBonus);");
    echo("" SPC "$pref::Environmentmaps = 1; (Reflections)\n");
 }
-
 
 function aboutNewRecs()
 {

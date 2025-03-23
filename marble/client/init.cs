@@ -112,6 +112,7 @@ function initClient()
    exec("./scripts/game.cs");
    exec("./scripts/version.cs");
    exec("./scripts/demo.cs");
+   exec("./scripts/convertDemos.cs");
    exec("./scripts/modTools.cs");
 
    // Default player key bindings
