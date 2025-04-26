@@ -401,6 +401,7 @@ function newCommands()
    echo("" SPC "convertFolder();        (sourceDir, [force], [timescale])");
    echo("" SPC "convertPath();          (sourcePath, [force], [timescale])");
    echo("" SPC "convertAll();           ([force], [timescale])");
+   echo("" SPC "exportDemos();          Copies all new recs to \"Exported\"");
    echo("" SPC "setRestartKeybind(str); Set restart keybind to str value");
    echo("" SPC "setRespawnKeybind(str); Set respawn keybind to str value");
    echo("" SPC "toggleBlackGems();      Turns on/off all gems being black\n");

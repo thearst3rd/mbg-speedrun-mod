@@ -1,4 +1,4 @@
-LAST UPDATED: March 22, 2025
+LAST UPDATED: March 29, 2025
 
 =============================================================================================================================
 INSTALLATION
@@ -42,6 +42,7 @@ There are various new tools that are available in this package. A mostly compreh
 - Max FPS function as an alternative to third party frame rate lockers
 - Hybrid cross-platform and backwards compatible rec format with improved file management
 - Convert functions to convert vanilla recs to hybrid rec format
+- Exporting new recs to dedicated folder for ease of migration
 - Various hotkeys with restart and respawn player bindable by player preference
 
 A help() function was added to allow users to read about these changes in-game.
@@ -105,6 +106,7 @@ convertDemo();          	(sourceRec, [force], [timescale]);
 convertFolder();        	(sourceDir, [force], [timescale]);
 convertPath();        		(sourcePath, [force], [timescale]);
 convertAll();           	([force], [timescale]);
+exportDemos();          	Copies all new recs to \"Exported\"");
 setRestartKeybind('STRING');	Set restart keybind to string value
 setRespawnKeybind('STRING');	Set respawn keybind to stringvalue
 toggleBlackGems();      	Turns on/off all gems being black, resets on reboot
@@ -123,7 +125,7 @@ $pref::Environmentmaps = 1;
 =============================================================================================================================
 About New Recs
 =============================================================================================================================
-The greatest achievement through the collaborative effort of many is the creation of a rec format that has cross-platform
+The greatest addition through the collaborative effort of many is the creation of a rec format that has cross-platform
 support while maintaining backwards compatibility. Recs recorded on v2.01 on Windows or v2.02 on Mac will be of this new 
 format. Recs from these versions will have a stamp at the beginning showing the version number of Speedrun Edition to 
 confirm. 
@@ -141,6 +143,9 @@ runs that the player wants saved, there are the following options:
 	- Continue will save the recording with the level name and elapsed time, then exit to level select.
 	- If the player exits a level, the player will be prompted if they would like to keep the attempt as a blooper or to 
 	  delete the recording.
+
+Vanilla recs can be be converted into these hybrid recs and exported to a dedicated folder for ease of migration to OpenMBG
+in the future.
 
 
 =============================================================================================================================
@@ -252,10 +257,10 @@ NEW ADDITIONS/CHANGES
 - Provided support to convert vanilla recs into to the new format for archival purposes. Recordings are played in-game while 
   recording in the new format. Files are stored in a new created directory "marble/client/demos/Converted". Features include:
 	- Four functions depending on desired scope:
-		- convertDemo(); for single files
-		- convertFolder(); for the entire contents of a single folder
-		- convertPath(); for the contents of a folder and its sub folders
-		- convertAll(); for all recs in the entire MBG directory tree
+		- convertDemo() for single files
+		- convertFolder() for the entire contents of a single folder
+		- convertPath() for the contents of a folder and its sub folders
+		- convertAll() for all recs in the entire MBG directory tree
 	- Creation of a new "Converted" directory tree that bypasses resource manager.
 	- Statistical console output and a full report of the location of unfinished and skipped recordings in a text file. 
 	  Skipped recordings include previously converted files or recordings already of the new format.
@@ -263,9 +268,11 @@ NEW ADDITIONS/CHANGES
 	- A force option to force a conversion regardless if a desync occurs or the rec was previously converted
 	- A timescale option to set the playback speed while converting - default is set to as fast as the engine will allow.
   NOTE: Converted recordings will NOT be verifiable.
+- exportDemos() created to provide the ability to "export" new recs to a dedicated directory for ease of future migration
+- Improved syncing with forceRecPhysics();
 
 REMOVALS
-- videoRecordDemo(); removed due to lack of interest and purpose
+- videoRecordDemo() removed due to lack of interest and purpose
 
 
 v2.03
@@ -294,12 +301,12 @@ NEW ADDITIONS
 	- Physics stored to assist with desyncs during playback
 	- Update only affects recs recorded from this version onward
 	- New recs can play on vanilla MBG and vice versa
-- forceRecPhysics(); added to allow users to force playback to sync using physics stored in recs
+- forceRecPhysics() added to allow users to force playback to sync using physics stored in recs
 - fov() and setTimeskip() functions added to more easily modify these prefs
 - toggleBlackGems() added to more intuitively modify the global variable
 
 CHANGES
-- realtimeOverride() changed to forceRecDelta(); to more accurately describe the function
+- realtimeOverride() changed to forceRecDelta() to more accurately describe the function
 
 BUG FIXES
 - Fixed bug where fps overlay was not updating if timescaling during demo playback, accuracy varies on degree of scaling
@@ -355,7 +362,7 @@ NEW ADDITIONS
 	f. Exiting to main menu or from demo saves place in level select
 - Various hotkeys, restart and respawn player bindable
 - New preferences and commands to toggle most things back to vanilla
-- help(); function to learn everything about the mod in-game
+- help() function to learn everything about the mod in-game
 
 KNOWN LIMITATIONS
 - If frame rate unlocker is disabled, timeskip and timescale are also disabled

@@ -113,7 +113,7 @@ function initClient()
    exec("./scripts/version.cs");
    exec("./scripts/demo.cs");
    exec("./scripts/convertDemos.cs");
-   exec("./scripts/modTools.cs");
+   exec("./scripts/exportDemos.cs");
 
    // Default player key bindings
    exec("./scripts/default.bind.cs");

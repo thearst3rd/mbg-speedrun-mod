@@ -36,7 +36,7 @@ function MBSetText(%text, %frame, %msg)
 
 function MessageBoxOK( %title, %message, %callback )
 {
-	MBOKFrame.setText( %title );
+	//MBOKFrame.setText( %title );
 	MBOKTitle.setText( "<just:center>" @ %title );
    Canvas.pushDialog( MessageBoxOKDlg );
    MBSetText(MBOKText, MBOKFrame, %message);

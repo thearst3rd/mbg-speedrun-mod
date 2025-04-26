@@ -1,65 +1,49 @@
-//***************************************** ENGINE-SIDE REC CONVERSION *****************************************
+//********************************************** SCRIPT-SIDE REC CONVERSION **********************************************
+// Single File
 function convertDemo(%sourceRec, %forced, %timescale) {
    convert_InitVariables(%forced, %timescale);
    $convert_NumConvertFiles++;
    $convert_File[$convert_FileIndex] = %sourceRec;
-   convert_createDestinationPath(%sourceRec);
+   convert_TargetValidationAndConversion(%sourceRec);
 }
 
+// Entire folder
 function convertFolder(%source, %forced, %timescale) { 
    convert_InitVariables(%forced, %timescale);
-   %sourcePath = filePath(%source);
-   convert_BuildRecordingList(%sourcePath, 0);
-   convert_InitBulkConversion();
+   convert_InitBulkRecording(filePath(%source), 1);
 }
 
+// Folder and its sub-folders
 function convertPath(%source, %forced, %timescale) { 
    convert_InitVariables(%forced, %timescale);
-   %sourcePath = filePath(%source);
-   convert_BuildRecordingList(%sourcePath, 1);
-   convert_InitBulkConversion();
+   convert_InitBulkRecording(filePath(%source), 0);
 }
 
+// All .rec files in the entire MBG tree
 function convertAll(%forced, %timescale) { 
    convert_InitVariables(%forced, %timescale);
-   convert_BuildRecordingList("", 2);
-   convert_InitBulkConversion();
+   convert_InitBulkRecording("", 0);
 }
 
-function convert_InitBulkConversion() {
-   if ($convert_NumConvertFiles == 0) {
-      echo($convert_OutputNoTargets);
-      clearConvert();
-   } else {
-      %sourceRec = $convert_File[$convert_FileIndex];
-      convert_createDestinationPath(%sourceRec);
-   }
-}
-
+// INITIALIZATION ********************************************************************************************************
 function convert_InitVariables(%forced, %timescale) {
-   $Game::State = "End";
+   ToggleConsole(1);
    deleteVariables("$convert_*");
-   $convert_StartTime = getRealTime();
-   $convert_FilenamePrefix = "[CVTD] ";
-   $convert_OutputInvalidPath = "\nCONVERSION ABORTED: Recording not found.\n";
-   $convert_OutputFileExists = "\nCONVERSION ABORTED: Converted recording already exists.\n";
-   $convert_OutputNoTargets = "\nCONVERSION ABORTED: No recordings found.\n";
-   $convert_OutputDesyncs = "****************** UNFINISHED RECORDINGS *****************\n";
-   $convert_OutputSkipped = "******************* SKIPPED RECORDINGS *******************\n";
+   $Game::State = "End";
 
-   $convert_NumConvertFiles = 0;
-   $convert_FileIndex = 0;
-   $convert_ConversionRunning = 0;
+   // Output
+   $convert_FilenamePrefix = "[CVTD] ";
+   $convert_OutputFinished = "******************* FINISHED RECORDINGS ******************\n";
+   $convert_FinishCount = 0;
+   $convert_OutputDesyncs  = "****************** UNFINISHED RECORDINGS *****************\n";
    $convert_DesyncCount = 0;
-   $convert_NewFormat = 0;
-   $convert_Skipped = 0;
+   $convert_OutputSkipped  = "******************** SKIPPED RECORDINGS ******************\n";
    $convert_SkippedCount = 0;
    
-   $convert_ToggleParticles = 0;
-   if ($pref::showParticles) {
-      $pref::showParticles = !$pref::showParticles;
-      $convert_ToggleParticles = 1;
-   }
+   // Static once set
+   $convert_writeDir = "marble/client/demos/Converted/.tmp";
+   $convert_StartTime = getRealTime();
+   $convert_NumConvertFiles = 0;
    $convert_Forced = 0;
    if (%forced) {
       $convert_Forced = %forced;
@@ -68,47 +52,155 @@ function convert_InitVariables(%forced, %timescale) {
    if (%timescale) {
       $convert_Timescale = %timescale;
    }
+
+   // Increments/Flags
+   $convert_FileIndex = 0;
+   $convert_Skipped = 0;
+
+   // Pref storage
+   $convert_ToggleParticles = $pref::showParticles;
+   $pref::showParticles = 0;
 }
 
-function convert_BuildRecordingList(%sourcePath, %mode)
+// Creates array of recs that matches the rule, relies on resource manager
+function convert_InitBulkRecording(%sourcePath, %folderOnly)
 {
-   switch(%mode)
-   {
-      case 0: // Single folder
-         for(%file = findFirstFile(%sourcePath @ "*.rec"); %file !$= ""; %file = findNextFile(%sourcePath @ "*.rec"))
-         {
-            %checkPath = filePath(%file);
-            if (stricmp(%checkPath, %sourcePath) == 0) {
-               $convert_File[$convert_NumConvertFiles] = %file;
-               $convert_NumConvertFiles++;
-            }
-         }
-      case 1: // Drill directory
-         for(%file = findFirstFile(%sourcePath @ "*.rec"); %file !$= ""; %file = findNextFile(%sourcePath @ "*.rec"))
-         {
-            $convert_File[$convert_NumConvertFiles] = %file;
-            $convert_NumConvertFiles++;
-         }
-      case 2: // Entire MBG tree
-         for(%file = findFirstFile("*.rec"); %file !$= ""; %file = findNextFile("*.rec"))
-         {
-            $convert_File[$convert_NumConvertFiles] = %file;
-            $convert_NumConvertFiles++;
-         }
+   %basePath = %sourcePath @ "*.rec";
+   for(%file = findFirstFile(%basePath); %file !$= ""; %file = findNextFile(%basePath)) {
+      %canConvert = strstr(%file, "demos/Converted") == -1 && strstr(%file, "demos/Exported") == -1;
+      if (%canConvert) {
+         $convert_File[$convert_NumConvertFiles] = %file;
+         $convert_NumConvertFiles++;
+      }
+
+      %inSourceFolder = stricmp(filePath(%file), %sourcePath) == 0;
+      if (%folderOnly && !%inSourceFolder)
+         $convert_NumConvertFiles--;
+   }
+
+   // If matches found, begin validation and conversion; else, end the operation
+   if ($convert_NumConvertFiles == 0) {
+      echo("\n\c6*** CONVERSION HALTED ***\n\c6No demos were found.");
+      ToggleConsole(1);
+      clearConvert();
+   } else {
+      %sourceRec = $convert_File[$convert_FileIndex];
+      convert_TargetValidationAndConversion(%sourceRec);
    }
 }
 
-function convert_createDestinationPath(%sourceRec) {
-   //Sets destination path
-   %destinationPath = strreplace(%sourceRec, "demos/", "demos/Converted/");
-   if (strstr(%sourceRec, "demos") == -1) {
-      %destinationPath = "marble/client/demos/Converted/";
-   } 
+// SCHEDULED VALIDATIONS AND CHECKS **************************************************************************************
+function convert_TargetValidationAndConversion(%sourceRec) {
+   //Set write location and destination location to be used in the loop
+   %newName =  $convert_FilenamePrefix @ fileBase(%sourceRec) @ ".rec";
+   %writePath = $convert_writeDir @ "/" @ %newName;
+   %destinationRec = filePath(strreplace(%sourceRec, "demos/", "demos/Converted/")) @ "/" @ $convert_FilenamePrefix @ fileBase(%sourceRec) @ ".rec";
+   if (strstr(%sourceRec, "demos") == -1)
+      %destinationRec = "marble/client/demos/Converted/" @ $convert_FilenamePrefix @ fileName(%sourceRec);
+   $convert_Schedule = schedule(50, 0, "convert_LoopedSchedule", %sourceRec, %writePath, %destinationRec);
 
-   // Builds directory tree
-   %tokenPath = filePath(%destinationPath);
+   // If not forced...
+   if (!$convert_Forced) {
+      // Checks if filename is shared in the destination path
+      %targetExists = getFileSize(%destinationRec) > 0;
+      if (%targetExists) {
+         echo("\n\c6*** CONVERSION HALTED ***\n\c6Converted demo already exists:\n" @ "\c6" @ %destinationRec);
+         verify_FailedCheck(%sourceRec, "Previously Converted");
+         return;
+      }
+
+      // Checks if source is the new format
+      %newFormat = verifynewformat(%sourceRec);
+      if (%newFormat) { 
+         echo("\n\c6*** CONVERSION HALTED ***\n\c6Demo is of the new format:\n" @ "\c6" @ %sourceRec);
+         verify_FailedCheck(%sourceRec, "New Format");
+         return;
+      }
+   }
+
+   // Checks if mission file stored in source demo is valid
+   %misPath = getMissionPath(%sourceRec);
+   if (strlen(%misPath) == 0) {
+      echo("\n\c6*** CONVERSION HALTED ***\n\c6Demo could not be played:\n" @ "\c6" @ %sourceRec);
+      verify_FailedCheck(%sourceRec, "Failed to Play");
+      return;
+   }
+
+   // Ensure necessary directories exist, then begin conversion
+   convert_createWriteDirectory();
+   doConvertDemo(%misPath, %sourceRec, %writePath, $convert_Timescale);
+}
+
+function verify_FailedCheck(%sourceRec, %tag) {
+   $convert_Skipped = 1;
+   $convert_SkippedCount++;
+   $convert_OutputSkipped = $convert_OutputSkipped @ %sourceRec SPC "(" @ %tag @ ")\n";    
+}
+
+function convert_createWriteDirectory() {
+   %demoCreated = mkdir("marble/client/demos");
+   %convertedCreated = mkdir("marble/client/demos/Converted");
+   %writeDirCreated = mkdir($convert_writeDir);
+   if (%demoCreated || %convertedCreated || %writeDirCreated)
+      convert_createWriteDirectory();
+}
+
+// Loops to validate completion. These validations must come prior to incrementing 
+// the index and must be skipped if pre-validation failed to avoid file
+// management artifacts. Loop schedule is staggered from move/deletion functions.
+function convert_LoopedSchedule(%sourceRec, %writePath, %destinationRec) {
+   if (!$playingDemo) {
+      if (!$convert_Skipped) {
+         //Desync Validation
+         if ($Game::State !$= "End" && !$convert_Forced) {
+            $Game::State = "End";
+            $convert_DesyncCount++;
+            $convert_OutputDesyncs = $convert_OutputDesyncs @ %sourceRec @ "\n"; 
+            convert_DeleteUnfinishedRecording(%writePath);
+            $convert_Schedule = schedule(100, 0, "convert_LoopedSchedule", %sourceRec, %writePath, %destinationRec);
+            return;  
+         }
+         // Completion/Forced Validation
+         if (getFileSize(%writePath) > 0) {
+            if (getFileSize(%destinationRec) > 0) {
+               convert_DeleteUnfinishedRecording(%destinationRec);
+               $convert_Schedule = schedule(100, 0, "convert_LoopedSchedule", %sourceRec, %writePath, %destinationRec);
+               return;
+            }
+            if ($Game::State $= "End") { 
+               $convert_FinishCount++;
+               %finish = mfloatLength(PlayGui.elapsedTime / 1000, 3);
+               $convert_OutputFinished = $convert_OutputFinished @ %sourceRec SPC "(" @ %finish @ ")\n";
+            } else {
+               $convert_DesyncCount++;
+               $convert_OutputDesyncs = $convert_OutputDesyncs @ %sourceRec @ "\n"; 
+            }
+            convert_MoveToDestinationPath(%writePath, %destinationRec);
+         }
+      }
+      
+      // End process if all sources have been converted
+      $convert_FileIndex++;
+      if ($convert_FileIndex == $convert_NumConvertFiles) {
+         clearConvert();
+         return;
+      }
+
+      // If all checks are passed, play next source
+      $convert_Skipped = 0;
+      %sourceRec = $convert_File[$convert_FileIndex];  
+      convert_TargetValidationAndConversion(%sourceRec); 
+   } else {
+      $convert_Schedule = schedule(50, 0, "convert_LoopedSchedule", %sourceRec, %writePath, %destinationRec);
+   }
+}
+
+// FILE MANAGEMENT ********************************************************************************************************
+// Builds directory tree before moving
+function convert_MoveToDestinationPath(%writePath, %destinationRec) {
+   %tokenPath = filePath(%destinationRec);
    %buildDirectories = "";
-   while(%buildDirectories !$= filePath(%destinationPath))
+   while(%buildDirectories !$= filePath(%destinationRec))
    {
       %tokenPath = nextToken(%tokenPath, "theToken", "/" );
       if (strlen(%buildDirectories) == 0) {
@@ -116,147 +208,91 @@ function convert_createDestinationPath(%sourceRec) {
       } else {
          %buildDirectories = %buildDirectories @ "/" @ %theToken;
       }
-      if (strstr(%buildDirectories, "demos") > 0) {
-         mkDir(%buildDirectories);
+      if (strstr(%buildDirectories, "demos/Converted/") > 0) {
+         while(mkDir(%buildDirectories)) {}
       }
    }
-   convert_TargetValidationAndConversion(%sourceRec, %destinationPath);
+   %moveFile = schedule(50, 0, "moveFile", %writePath, %destinationRec);
 }
 
-function convert_TargetValidationAndConversion(%sourceRec, %destinationPath) {
-   //Set destination rec to be used in the loop
-   %convertWritePath = filePath(%destinationPath);
-   %newName =  $convert_FilenamePrefix @ fileBase(%sourceRec) @ ".rec";
-   %destinationRec = %convertWritePath @ "/" @ %newName;
-   $convert_Schedule = schedule(50, 0, "convert_LoopedSchedule", %sourceRec, %destinationRec);
-
-   // Checks if target already exists
-   %checkIfTargetExists = getFileSize(%destinationRec);
-   if (%checkIfTargetExists > 0 && !$convert_Forced) {
-      echo($convert_OutputFileExists);
-      $convert_Skipped = 1;
-      $convert_SkippedCount++;
-      $convert_OutputSkipped = $convert_OutputSkipped @ %sourceRec @ " (Converted)\n";  
-      return;
-   }
-
-   // Checks if source is playable before attempting to convert
-   playdemo(%sourceRec);
-   if ($playingDemo) {
-      setTimeScale($convert_Timescale);
-      doConvertDemo(%convertWritePath, %newName, $Server::MissionFile);
-   } else {
-      echo($convert_OutputInvalidPath);
-   }
-}
-
-function convert_LoopedSchedule(%sourceRec, %destinationRec) {
-   if (!$playingDemo) {
-      //Validations, must come prior to incrementing to next index
-      if (strlen($Game::State) > 0 && $Game::State !$= "End" && !$convert_Skipped && !$convert_Forced) {
-         $Game::State = "End";
-         $convert_DesyncCount++;
-         $convert_OutputDesyncs = $convert_OutputDesyncs @ %sourceRec @ "\n";  
-         convert_DeleteUnfinishedRecording(%destinationRec);
-         convert_LoopedSchedule(%sourceRec, %destinationRec);
-         return;
-      }
-      if ($convert_NewFormat && !$convert_Forced) {
-         $convert_SkippedCount++;
-         $convert_OutputSkipped = $convert_OutputSkipped @ %sourceRec @ " (New Format)\n";  
-      }
-      $convert_FileIndex++;
-
-      // End process if all sources have been converted
-      if ($convert_FileIndex == $convert_NumConvertFiles) {
-         clearConvert();
-         return;
-      }
-
-      //Convert next demo if fail all other checks
+// Also used in onDemoPlayDone in playMissionGui when canceling the conversion loop
+function convert_DeleteUnfinishedRecording(%deletionFile) {
+   if (strlen(%deletionFile) == 0) {
       %sourceRec = $convert_File[$convert_FileIndex];
-      $convert_Skipped = 0;
-      $convert_NewFormat = 0;
-      convert_createDestinationPath(%sourceRec);
-   } else {
-      $convert_Schedule = schedule(50, 0, "convert_LoopedSchedule", %sourceRec, %destinationRec);
-   }
-}
-
-function convert_DeleteUnfinishedRecording(%destinationRec) {
-   %deletionFile = %destinationRec;
-   if (strlen(%deletionFile == 0)) {
-      %sourceRec = $convert_File[$convert_FileIndex];
-      %deletionFile = filePath(strreplace(%sourceRec, "demos/", "demos/Converted/")) @ "/" @ $convert_FilenamePrefix @ fileBase(%sourceRec) @ ".rec";
+      %deletionFile = $convert_writeDir @ "/" @ $convert_FilenamePrefix @ fileBase(%sourceRec) @ ".rec";
    }
    if (getFileSize(%deletionFile) > 0) {
       %deleteFile = schedule(50, 0, "removeFile", %deletionFile);
    } else {
-      convert_DeleteUnfinishedRecording(%deletionFile);
+      %deleteFile = schedule(50, 0, "convert_DeleteUnfinishedRecording", %deletionFile);
    }
 }
 
-function convert_getDuration(%start) {
+// END PROCESSES *********************************************************************************************************
+function convert_GetDuration(%start) {
    %duration = mAbs(mfloor((getRealTime() - %start) / 1000));
    %hours = mfloor(%duration /3600);
    %mins = mfloor((%duration - mfloor(%duration/3600) * 3600)/60);
    %secs = mfloor((%duration - mfloor(%duration/60) * 60));
-   %durationOutput = "";
+   %durationOutput = " ";
    if (%hours)
-      %durationOutput = %hours @ "h"; 
+      %durationOutput = %hours @ " hr "; 
    if (%mins)
-      %durationOutput = %durationOutput SPC %mins @ "m";
-   %durationOutput = %durationOutput SPC %secs @ "s";
+      %durationOutput = %durationOutput @ %mins @ " min ";
+   %durationOutput = %durationOutput @ %secs @ " sec";
    return %durationOutput;
 }
 
+// This function utilizes resource manager to create the report and its directories
 function convert_CreateReport(%f, %stats, %output) {
-   %fpath = "marble/client/demos/Converted/_Reports/";
+   %fpath = "marble/client/demos/Converted/Reports/";
    %fname = "fullReport (";
-   mkdir(%fpath);
-
    %inc = 1;
    while(getFileSize(%fpath @ %fname @ %inc @ ").txt") > 0){
       %inc++;
    }
    %fullPath = %fpath @ %fname @ %inc @ ").txt";
+
    %f.openForWrite(%fullPath);
    %f.writeLine(%stats @ "\n" @ %output);
    %f.close();
    %f.delete();
-   echo("See your full report at:\n" @ %fullPath @ "\n");
+   return "See your full report at:\n" @ %fullPath @ "\n";
 }
 
 function clearConvert() {
    // Output
-   echo("\n******************* FINISHED CONVERTING ******************\n");
-   %duration = convert_getDuration($convert_StartTime);
-   %stats = "Conversion Duration:" SPC %duration @ "\n";
-   %omitted = $convert_DesyncCount + $convert_SkippedCount;
-   %stats = %stats @ "Number of Conversions:" SPC ($convert_FileIndex - %omitted) @ "\n";
-   %stats = %stats @ "Unfinished Recordings:" SPC $convert_DesyncCount @ "\n";
-   %stats = %stats @ "Skipped Recordings:" SPC $convert_SkippedCount @ "\n";
-   echo(%stats);
-   if ($convert_DesyncCount || $convert_SkippedCount) {
+   if ($convert_FinishCount || $convert_DesyncCount || $convert_SkippedCount) {
+      echo("\n\c1******************* \c0FINISHED CONVERTING \c1******************\n");
+      %duration = convert_GetDuration($convert_StartTime);
+      %stats = "Conversion Duration:" @ %duration @ "\n";
+      %stats = %stats @ "Finished Recordings:" SPC $convert_FinishCount @ "\n";
+      %stats = %stats @ "Unfinished Recordings:" SPC $convert_DesyncCount @ "\n";
+      %stats = %stats @ "Skipped Recordings:" SPC $convert_SkippedCount @ "\n";
+      echo(%stats);
+      
       %output = "";
-      if ($convert_DesyncCount || $convert_SkippedCount) {
-         if ($convert_DesyncCount)
-            %output = $convert_OutputDesyncs;
-         if ($convert_SkippedCount) {
-            if (strlen(%output) > 0)
-               %output = %output @ "\n";
-            %output = %output @ $convert_OutputSkipped;
-         }
-         %report = new FileObject();
-         convert_CreateReport(%report, %stats, %output);
+      if ($convert_FinishCount) {
+         %output = $convert_OutputFinished;
       }
+      if ($convert_DesyncCount) {
+         if (strlen(%output) > 0)
+            %output = %output @ "\n";
+         %output = %output @ $convert_OutputDesyncs;
+      }
+      if ($convert_SkippedCount) {
+         if (strlen(%output) > 0)
+            %output = %output @ "\n";
+         %output = %output @ $convert_OutputSkipped;
+      }
+      %report = new FileObject();
+      echo(convert_CreateReport(%report, %stats, %output));
+      echo("\c1**********************************************************\n");
+      ToggleConsole(1);
    }
-   echo("**********************************************************\n");
 
    // Clean-up
    cancel($convert_Schedule);
-   if ($convert_ToggleParticles) {
-      $pref::showParticles = !$pref::showParticles;
-   }
+   $pref::showParticles = $convert_ToggleParticles;
    deleteVariables("$convert_*");
 }

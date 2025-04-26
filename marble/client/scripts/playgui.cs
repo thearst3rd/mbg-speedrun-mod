@@ -168,6 +168,11 @@ function onFrameAdvance(%timeDelta)
    if($PlayTimerActive) {
       PlayGui.updateTimer(%timeDelta);
    }
+   if ($recGameElapsed && $playingDemo) {
+      PlayGui.setTime($recGameElapsed);
+   } else {
+      deleteVariables("$recGameElapsed");
+   }
 
    TimerHundredths.setVisible(!$pref::extendedTimer);
    TimerThousandths.setVisible($pref::extendedTimer);
@@ -175,6 +180,7 @@ function onFrameAdvance(%timeDelta)
    %wasd = getInputs();
    inputDisplay();
    startAnalysis(%wasd);
+
 }
 
 function PlayGui::stopTimer(%this)

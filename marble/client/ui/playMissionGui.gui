@@ -550,11 +550,9 @@ function onDemoPlayDone(%forced)
    }
 
    if (%forced && $convert_Schedule) {
-      convert_DeleteUnfinishedRecording();
+      convert_DeleteUnfinishedRecording("");
       clearConvert();
    }
-   if (%forced && $verify_Schedule)
-      clearVerify();
 }
 
 function saveCurrentSelect() {
